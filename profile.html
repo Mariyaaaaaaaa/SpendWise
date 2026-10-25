@@ -1,0 +1,2298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Profile | SpendWise</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #07111f;
+            --card: rgba(16, 29, 48, 0.72);
+            --card-hover: rgba(22, 38, 61, 0.88);
+            --border: rgba(255, 255, 255, 0.08);
+
+            --mint: #51e6ad;
+            --purple: #7569ff;
+
+            --white: #ffffff;
+            --text: #eef3f8;
+            --muted: #8795a8;
+
+            --danger: #ff6b81;
+            --warning: #ffc857;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background:
+                radial-gradient(
+                    circle at 85% 5%,
+                    rgba(117, 105, 255, 0.11),
+                    transparent 27%
+                ),
+                radial-gradient(
+                    circle at 15% 80%,
+                    rgba(81, 230, 173, 0.06),
+                    transparent 25%
+                ),
+                var(--bg);
+
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            padding: 28px 18px;
+
+            background: rgba(7, 17, 31, 0.95);
+            border-right: 1px solid var(--border);
+
+            backdrop-filter: blur(20px);
+
+            z-index: 1000;
+        }
+
+        .logo {
+            padding: 0 14px;
+            margin-bottom: 42px;
+
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: var(--mint);
+        }
+
+        .nav-section {
+            margin-bottom: 28px;
+        }
+
+        .nav-title {
+            padding: 0 14px;
+            margin-bottom: 10px;
+
+            color: #536276;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+
+            padding: 12px 14px;
+            margin-bottom: 5px;
+
+            border-radius: 12px;
+
+            color: var(--muted);
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 500;
+
+            transition: 0.25s;
+        }
+
+        .nav-link i {
+            width: 18px;
+            text-align: center;
+        }
+
+        .nav-link:hover {
+            color: var(--white);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .nav-link.active {
+            color: var(--mint);
+            background: rgba(81,230,173,0.10);
+        }
+
+        .nav-link.active i {
+            color: var(--mint);
+        }
+
+        .logout {
+            position: absolute;
+
+            bottom: 25px;
+            left: 18px;
+            right: 18px;
+        }
+
+        .logout .nav-link:hover {
+            color: var(--danger);
+            background: rgba(255,107,129,0.08);
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            margin-left: 250px;
+            padding: 28px 38px 50px;
+
+            min-height: 100vh;
+        }
+
+        /* =========================
+           TOPBAR
+        ========================= */
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            display: flex;
+            align-items: center;
+        }
+
+        .page-title h1 {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+        }
+
+        .page-title p {
+            margin-top: 5px;
+
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+
+            border: 1px solid var(--border);
+            border-radius: 12px;
+
+            background: var(--card);
+            color: var(--muted);
+
+            cursor: pointer;
+        }
+
+        .icon-btn:hover {
+            color: var(--mint);
+        }
+
+        .profile-mini {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar-mini {
+            width: 40px;
+            height: 40px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: linear-gradient(
+                135deg,
+                var(--mint),
+                var(--purple)
+            );
+
+            color: #07111f;
+            font-weight: 800;
+        }
+
+        .profile-mini span {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* =========================
+           PROFILE HERO
+        ========================= */
+
+        .profile-hero {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 30px;
+
+            margin-bottom: 22px;
+
+            border: 1px solid var(--border);
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(81,230,173,0.09),
+                    rgba(117,105,255,0.10)
+                ),
+                var(--card);
+
+            backdrop-filter: blur(20px);
+
+            overflow: hidden;
+        }
+
+        .profile-hero::after {
+            content: "";
+
+            position: absolute;
+
+            width: 230px;
+            height: 230px;
+
+            right: -90px;
+            top: -130px;
+
+            border-radius: 50%;
+
+            background: rgba(81,230,173,0.08);
+        }
+
+        .profile-main {
+            position: relative;
+            z-index: 2;
+
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .profile-avatar {
+            width: 92px;
+            height: 92px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--mint),
+                    var(--purple)
+                );
+
+            color: #07111f;
+
+            font-size: 31px;
+            font-weight: 800;
+
+            border: 4px solid rgba(255,255,255,0.08);
+
+            box-shadow:
+                0 12px 35px rgba(81,230,173,0.13);
+        }
+
+        .profile-info h2 {
+            font-size: 22px;
+            margin-bottom: 6px;
+        }
+
+        .profile-info p {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .member-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            margin-top: 10px;
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            color: var(--mint);
+            background: rgba(81,230,173,0.08);
+
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .edit-profile-btn {
+            position: relative;
+            z-index: 3;
+
+            padding: 11px 17px;
+
+            border: 1px solid rgba(81,230,173,0.25);
+            border-radius: 10px;
+
+            background: rgba(81,230,173,0.07);
+            color: var(--mint);
+
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+        }
+
+        .edit-profile-btn:hover {
+            background: rgba(81,230,173,0.14);
+            transform: translateY(-2px);
+        }
+
+        /* =========================
+           CONTENT GRID
+        ========================= */
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.3fr 0.7fr;
+            gap: 22px;
+        }
+
+        .card {
+            padding: 23px;
+
+            border: 1px solid var(--border);
+            border-radius: 18px;
+
+            background: var(--card);
+
+            backdrop-filter: blur(18px);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 22px;
+        }
+
+        .card-title h3 {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .card-title i {
+            color: var(--mint);
+        }
+
+        /* =========================
+           PERSONAL INFORMATION
+        ========================= */
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 17px;
+        }
+
+        .info-item {
+            padding: 15px;
+
+            border: 1px solid rgba(255,255,255,0.055);
+            border-radius: 12px;
+
+            background: rgba(255,255,255,0.025);
+        }
+
+        .info-label {
+            margin-bottom: 7px;
+
+            color: var(--muted);
+
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            color: var(--text);
+
+            font-size: 13px;
+            font-weight: 600;
+
+            word-break: break-word;
+        }
+
+        /* =========================
+           FINANCIAL STATS
+        ========================= */
+
+        .financial-list {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+        }
+
+        .financial-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 13px;
+
+            border-radius: 12px;
+
+            background: rgba(255,255,255,0.025);
+        }
+
+        .financial-left {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .financial-icon {
+            width: 35px;
+            height: 35px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            color: var(--mint);
+            background: rgba(81,230,173,0.08);
+        }
+
+        .financial-item:nth-child(2) .financial-icon {
+            color: var(--purple);
+            background: rgba(117,105,255,0.10);
+        }
+
+        .financial-item:nth-child(3) .financial-icon {
+            color: var(--warning);
+            background: rgba(255,200,87,0.08);
+        }
+
+        .financial-label {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .financial-name {
+            margin-top: 3px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .financial-value {
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        /* =========================
+           ACCOUNT SECURITY
+        ========================= */
+
+        .security-list {
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+        }
+
+        .security-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 14px 0;
+
+            border-bottom: 1px solid rgba(255,255,255,0.055);
+        }
+
+        .security-row:last-child {
+            border-bottom: none;
+        }
+
+        .security-left {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .security-left i {
+            width: 32px;
+            height: 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+
+            color: var(--mint);
+            background: rgba(81,230,173,0.08);
+        }
+
+        .security-text strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .security-text small {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .verified {
+            color: var(--mint);
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        /* =========================
+           ACTIVITY
+        ========================= */
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .activity {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .activity-icon {
+            width: 34px;
+            height: 34px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            color: var(--purple);
+            background: rgba(117,105,255,0.10);
+        }
+
+        .activity-text strong {
+            display: block;
+
+            margin-bottom: 3px;
+
+            font-size: 11px;
+        }
+
+        .activity-text span {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+
+            display: none;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            background: rgba(0,0,0,0.68);
+            backdrop-filter: blur(8px);
+
+            z-index: 2000;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            width: 100%;
+            max-width: 470px;
+
+            padding: 27px;
+
+            border: 1px solid var(--border);
+            border-radius: 20px;
+
+            background: #0c192b;
+
+            box-shadow: 0 25px 70px rgba(0,0,0,0.45);
+
+            animation: modalIn 0.25s ease;
+        }
+
+        @keyframes modalIn {
+
+            from {
+                opacity: 0;
+                transform: translateY(15px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 23px;
+        }
+
+        .modal-header h2 {
+            font-size: 18px;
+        }
+
+        .close-btn {
+            width: 34px;
+            height: 34px;
+
+            border: none;
+            border-radius: 9px;
+
+            background: rgba(255,255,255,0.05);
+            color: var(--muted);
+
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: var(--white);
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #aab5c4;
+
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .input {
+            width: 100%;
+            height: 45px;
+
+            padding: 0 13px;
+
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            outline: none;
+
+            background: rgba(255,255,255,0.035);
+            color: var(--white);
+
+            font-family: inherit;
+            font-size: 12px;
+        }
+
+        .input:focus {
+            border-color: rgba(81,230,173,0.45);
+            box-shadow: 0 0 0 3px rgba(81,230,173,0.06);
+        }
+
+        .input::placeholder {
+            color: #586678;
+        }
+
+        .avatar-options {
+            display: flex;
+            gap: 9px;
+            flex-wrap: wrap;
+        }
+
+        .avatar-option {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid var(--border);
+            border-radius: 50%;
+
+            background: rgba(255,255,255,0.04);
+
+            color: var(--text);
+
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .avatar-option.selected {
+            border-color: var(--mint);
+            box-shadow: 0 0 0 3px rgba(81,230,173,0.08);
+            color: var(--mint);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+
+            margin-top: 23px;
+        }
+
+        .modal-btn {
+            flex: 1;
+
+            height: 43px;
+
+            border-radius: 10px;
+
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .cancel-btn {
+            border: 1px solid var(--border);
+
+            background: transparent;
+            color: var(--muted);
+        }
+
+        .save-btn {
+            border: none;
+
+            background: var(--mint);
+            color: #07111f;
+        }
+
+        .save-btn:hover {
+            background: #70edc0;
+        }
+
+        /* =========================
+           TOAST
+        ========================= */
+
+        .toast {
+            position: fixed;
+
+            right: 25px;
+            bottom: 25px;
+
+            padding: 13px 17px;
+
+            border: 1px solid rgba(81,230,173,0.18);
+            border-radius: 12px;
+
+            background: #112238;
+
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+
+            color: var(--white);
+
+            font-size: 12px;
+
+            transform: translateY(100px);
+            opacity: 0;
+
+            transition: 0.3s;
+
+            z-index: 3000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast i {
+            margin-right: 7px;
+            color: var(--mint);
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        .mobile-menu {
+            display: none;
+
+            width: 40px;
+            height: 40px;
+
+            margin-right: 12px;
+
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid var(--border);
+            border-radius: 10px;
+
+            background: var(--card);
+            color: var(--white);
+
+            cursor: pointer;
+        }
+
+        @media (max-width: 1050px) {
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                transform: translateX(-100%);
+                transition: 0.3s;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .page-title {
+                align-items: center;
+            }
+
+            .profile-mini span {
+                display: none;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .profile-hero {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .edit-profile-btn {
+                width: 100%;
+            }
+
+            .profile-main {
+                width: 100%;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .icon-btn {
+                display: none;
+            }
+
+            .profile-avatar {
+                width: 75px;
+                height: 75px;
+                font-size: 25px;
+            }
+
+        }
+    </style>
+</head>
+
+
+<body>
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+        Spend<span>Wise</span>
+    </div>
+
+
+    <div class="nav-section">
+
+        <div class="nav-title">
+            Main Menu
+        </div>
+
+
+        <a href="dashboard.html" class="nav-link">
+            <i class="fa-solid fa-grid-2"></i>
+            Dashboard
+        </a>
+
+
+        <a href="transactions.html" class="nav-link">
+            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+            Transactions
+        </a>
+
+
+        <a href="analytics.html" class="nav-link">
+            <i class="fa-solid fa-chart-pie"></i>
+            Analytics
+        </a>
+
+
+        <a href="budget.html" class="nav-link">
+            <i class="fa-solid fa-wallet"></i>
+            Budgets
+        </a>
+
+
+        <a href="goals.html" class="nav-link">
+            <i class="fa-solid fa-bullseye"></i>
+            Goals
+        </a>
+
+    </div>
+
+
+    <div class="nav-section">
+
+        <div class="nav-title">
+            Account
+        </div>
+
+
+        <a href="profile.html" class="nav-link active">
+            <i class="fa-solid fa-user"></i>
+            Profile
+        </a>
+
+
+        <a href="settings.html" class="nav-link">
+            <i class="fa-solid fa-gear"></i>
+            Settings
+        </a>
+
+    </div>
+
+
+    <div class="logout">
+
+        <a href="index.html" class="nav-link">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Logout
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="main">
+
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <div class="page-title">
+
+            <button
+                class="mobile-menu"
+                onclick="toggleSidebar()">
+
+                <i class="fa-solid fa-bars"></i>
+
+            </button>
+
+
+            <div>
+
+                <h1>My Profile</h1>
+
+                <p>
+                    Manage your personal information and account.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="top-actions">
+
+            <button class="icon-btn">
+
+                <i class="fa-regular fa-bell"></i>
+
+            </button>
+
+
+            <div class="profile-mini">
+
+                <div
+                    class="avatar-mini"
+                    id="miniAvatar">
+
+                    M
+
+                </div>
+
+                <span id="miniName">
+                    Mariya
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         PROFILE HERO
+    ========================= -->
+
+    <section class="profile-hero">
+
+        <div class="profile-main">
+
+            <div
+                class="profile-avatar"
+                id="profileAvatar">
+
+                M
+
+            </div>
+
+
+            <div class="profile-info">
+
+                <h2 id="profileName">
+                    Mariya George
+                </h2>
+
+                <p id="profileEmail">
+                    mariya@example.com
+                </p>
+
+
+                <div class="member-badge">
+
+                    <i class="fa-solid fa-star"></i>
+
+                    SpendWise Member
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="edit-profile-btn"
+            onclick="openProfileModal()">
+
+            <i class="fa-solid fa-pen"></i>
+
+            Edit Profile
+
+        </button>
+
+    </section>
+
+
+    <!-- =========================
+         CONTENT
+    ========================= -->
+
+    <div class="content-grid">
+
+
+        <!-- PERSONAL INFORMATION -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <h3>
+                    Personal Information
+                </h3>
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+
+
+            <div class="info-grid">
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        Full Name
+                    </div>
+
+                    <div
+                        class="info-value"
+                        id="infoName">
+
+                        Mariya George
+
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        Email Address
+                    </div>
+
+                    <div
+                        class="info-value"
+                        id="infoEmail">
+
+                        mariya@example.com
+
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        Phone Number
+                    </div>
+
+                    <div
+                        class="info-value"
+                        id="infoPhone">
+
+                        Not added
+
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        Location
+                    </div>
+
+                    <div
+                        class="info-value"
+                        id="infoLocation">
+
+                        Kerala, India
+
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        Currency
+
+                    </div>
+
+                    <div class="info-value">
+                        Indian Rupee (₹)
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        Member Since
+                    </div>
+
+                    <div
+                        class="info-value"
+                        id="memberSince">
+
+                        September 2026
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FINANCIAL SUMMARY -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <h3>
+                    Financial Snapshot
+                </h3>
+
+                <i class="fa-solid fa-chart-line"></i>
+
+            </div>
+
+
+            <div class="financial-list">
+
+
+                <div class="financial-item">
+
+                    <div class="financial-left">
+
+                        <div class="financial-icon">
+
+                            <i class="fa-solid fa-wallet"></i>
+
+                        </div>
+
+                        <div>
+
+                            <div class="financial-label">
+                                Current Balance
+                            </div>
+
+                            <div class="financial-name">
+                                Available
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="financial-value"
+                        id="balanceValue">
+
+                        ₹0
+
+                    </div>
+
+                </div>
+
+
+                <div class="financial-item">
+
+                    <div class="financial-left">
+
+                        <div class="financial-icon">
+
+                            <i class="fa-solid fa-arrow-down"></i>
+
+                        </div>
+
+                        <div>
+
+                            <div class="financial-label">
+                                Total Income
+                            </div>
+
+                            <div class="financial-name">
+                                This account
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="financial-value"
+                        id="incomeValue">
+
+                        ₹0
+
+                    </div>
+
+                </div>
+
+
+                <div class="financial-item">
+
+                    <div class="financial-left">
+
+                        <div class="financial-icon">
+
+                            <i class="fa-solid fa-arrow-up"></i>
+
+                        </div>
+
+                        <div>
+
+                            <div class="financial-label">
+                                Total Expenses
+                            </div>
+
+                            <div class="financial-name">
+                                Recorded
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="financial-value"
+                        id="expenseValue">
+
+                        ₹0
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- SECURITY -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <h3>
+                    Account Security
+                </h3>
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+            </div>
+
+
+            <div class="security-list">
+
+
+                <div class="security-row">
+
+                    <div class="security-left">
+
+                        <i class="fa-solid fa-envelope"></i>
+
+                        <div class="security-text">
+
+                            <strong>
+                                Email Address
+                            </strong>
+
+                            <small>
+                                Your email is connected
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="verified">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        Verified
+
+                    </div>
+
+                </div>
+
+
+                <div class="security-row">
+
+                    <div class="security-left">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        <div class="security-text">
+
+                            <strong>
+                                Password
+                            </strong>
+
+                            <small>
+                                Last updated recently
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="verified">
+
+                        Protected
+
+                    </div>
+
+                </div>
+
+
+                <div class="security-row">
+
+                    <div class="security-left">
+
+                        <i class="fa-solid fa-mobile-screen"></i>
+
+                        <div class="security-text">
+
+                            <strong>
+                                Two-Factor Authentication
+                            </strong>
+
+                            <small>
+                                Extra account protection
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            color:var(--muted);
+                            font-size:10px;
+                            font-weight:700;
+                        ">
+
+                        Not enabled
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- RECENT ACTIVITY -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <h3>
+                    Recent Activity
+                </h3>
+
+                <i class="fa-solid fa-clock-rotate-left"></i>
+
+            </div>
+
+
+            <div class="activity-list">
+
+
+                <div class="activity">
+
+                    <div class="activity-icon">
+
+                        <i class="fa-solid fa-user-pen"></i>
+
+                    </div>
+
+                    <div class="activity-text">
+
+                        <strong>
+                            Profile viewed
+                        </strong>
+
+                        <span>
+                            Your profile was opened recently
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="activity">
+
+                    <div class="activity-icon">
+
+                        <i class="fa-solid fa-bullseye"></i>
+
+                    </div>
+
+                    <div class="activity-text">
+
+                        <strong>
+                            Savings goals
+                        </strong>
+
+                        <span>
+                            Track your progress toward your goals
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="activity">
+
+                    <div class="activity-icon">
+
+                        <i class="fa-solid fa-chart-pie"></i>
+
+                    </div>
+
+                    <div class="activity-text">
+
+                        <strong>
+                            Analytics
+                        </strong>
+
+                        <span>
+                            Your spending insights are available
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- =========================
+     EDIT PROFILE MODAL
+========================= -->
+
+<div
+    class="modal-overlay"
+    id="profileModal">
+
+    <div class="modal">
+
+
+        <div class="modal-header">
+
+            <h2>
+                Edit Profile
+            </h2>
+
+            <button
+                class="close-btn"
+                onclick="closeProfileModal()">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <form id="profileForm">
+
+
+            <div class="form-group">
+
+                <label>
+                    Full Name
+                </label>
+
+                <input
+                    type="text"
+                    id="editName"
+                    class="input"
+                    placeholder="Enter your full name"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="editEmail"
+                    class="input"
+                    placeholder="Enter your email"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Phone Number
+                </label>
+
+                <input
+                    type="tel"
+                    id="editPhone"
+                    class="input"
+                    placeholder="Enter your phone number"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Location
+                </label>
+
+                <input
+                    type="text"
+                    id="editLocation"
+                    class="input"
+                    placeholder="City, Country"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Choose Avatar
+                </label>
+
+
+                <div class="avatar-options">
+
+                    <button
+                        type="button"
+                        class="avatar-option"
+                        onclick="selectAvatar('M', this)">
+                        M
+                    </button>
+
+                    <button
+                        type="button"
+                        class="avatar-option"
+                        onclick="selectAvatar('A', this)">
+                        A
+                    </button>
+
+                    <button
+                        type="button"
+                        class="avatar-option"
+                        onclick="selectAvatar('G', this)">
+                        G
+                    </button>
+
+                    <button
+                        type="button"
+                        class="avatar-option"
+                        onclick="selectAvatar('S', this)">
+                        S
+                    </button>
+
+                    <button
+                        type="button"
+                        class="avatar-option"
+                        onclick="selectAvatar('★', this)">
+                        ★
+                    </button>
+
+                    <button
+                        type="button"
+                        class="avatar-option"
+                        onclick="selectAvatar('♥', this)">
+                        ♥
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="modal-btn cancel-btn"
+                    onclick="closeProfileModal()">
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="modal-btn save-btn">
+
+                    <i class="fa-solid fa-check"></i>
+
+                    Save Changes
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div
+    class="toast"
+    id="toast">
+
+    <i class="fa-solid fa-circle-check"></i>
+
+    <span id="toastMessage">
+        Profile updated successfully.
+    </span>
+
+</div>
+
+
+<script>
+
+    /* =========================
+       STORAGE
+    ========================= */
+
+    const PROFILE_KEY = "spendwiseProfile";
+
+    let profile =
+        JSON.parse(
+            localStorage.getItem(PROFILE_KEY)
+        ) || {
+
+            name: "Mariya George",
+
+            email: "mariya@example.com",
+
+            phone: "",
+
+            location: "Kerala, India",
+
+            avatar: "M",
+
+            createdAt:
+                new Date().toISOString()
+
+        };
+
+
+    /* =========================
+       CURRENCY
+    ========================= */
+
+    const money = new Intl.NumberFormat(
+        "en-IN",
+        {
+            style: "currency",
+            currency: "INR",
+            maximumFractionDigits: 0
+        }
+    );
+
+
+    /* =========================
+       LOAD PROFILE
+    ========================= */
+
+    function loadProfile() {
+
+        const firstLetter =
+            profile.avatar ||
+            profile.name
+                .charAt(0)
+                .toUpperCase();
+
+
+        document.getElementById(
+            "profileAvatar"
+        ).textContent = firstLetter;
+
+
+        document.getElementById(
+            "miniAvatar"
+        ).textContent = firstLetter;
+
+
+        document.getElementById(
+            "profileName"
+        ).textContent =
+            profile.name;
+
+
+        document.getElementById(
+            "miniName"
+        ).textContent =
+            profile.name.split(" ")[0];
+
+
+        document.getElementById(
+            "profileEmail"
+        ).textContent =
+            profile.email;
+
+
+        document.getElementById(
+            "infoName"
+        ).textContent =
+            profile.name;
+
+
+        document.getElementById(
+            "infoEmail"
+        ).textContent =
+            profile.email;
+
+
+        document.getElementById(
+            "infoPhone"
+        ).textContent =
+            profile.phone || "Not added";
+
+
+        document.getElementById(
+            "infoLocation"
+        ).textContent =
+            profile.location || "Not added";
+
+
+        if (profile.createdAt) {
+
+            document.getElementById(
+                "memberSince"
+            ).textContent =
+                new Date(
+                    profile.createdAt
+                ).toLocaleDateString(
+                    "en-IN",
+                    {
+                        month: "long",
+                        year: "numeric"
+                    }
+                );
+
+        }
+
+
+        updateFinancialSnapshot();
+
+    }
+
+
+    /* =========================
+       FINANCIAL SNAPSHOT
+    ========================= */
+
+    function updateFinancialSnapshot() {
+
+        const expenses =
+            JSON.parse(
+                localStorage.getItem(
+                    "spendwiseExpenses"
+                )
+            ) || [];
+
+
+        let totalExpenses = 0;
+
+
+        expenses.forEach(expense => {
+
+            totalExpenses +=
+                Number(expense.amount) || 0;
+
+        });
+
+
+        /*
+            Demo income value.
+            Later this can be connected
+            to an income/transactions system.
+        */
+
+        const income = 30000;
+
+        const balance =
+            Math.max(
+                income - totalExpenses,
+                0
+            );
+
+
+        document.getElementById(
+            "balanceValue"
+        ).textContent =
+            money.format(balance);
+
+
+        document.getElementById(
+            "incomeValue"
+        ).textContent =
+            money.format(income);
+
+
+        document.getElementById(
+            "expenseValue"
+        ).textContent =
+            money.format(totalExpenses);
+
+    }
+
+
+    /* =========================
+       OPEN MODAL
+    ========================= */
+
+    function openProfileModal() {
+
+        document.getElementById(
+            "editName"
+        ).value =
+            profile.name;
+
+
+        document.getElementById(
+            "editEmail"
+        ).value =
+            profile.email;
+
+
+        document.getElementById(
+            "editPhone"
+        ).value =
+            profile.phone;
+
+
+        document.getElementById(
+            "editLocation"
+        ).value =
+            profile.location;
+
+
+        document.getElementById(
+            "profileModal"
+        ).classList.add("show");
+
+    }
+
+
+    /* =========================
+       CLOSE MODAL
+    ========================= */
+
+    function closeProfileModal() {
+
+        document.getElementById(
+            "profileModal"
+        ).classList.remove("show");
+
+    }
+
+
+    /* =========================
+       AVATAR
+    ========================= */
+
+    let selectedAvatar =
+        profile.avatar || "M";
+
+
+    function selectAvatar(
+        avatar,
+        button
+    ) {
+
+        selectedAvatar = avatar;
+
+
+        document
+            .querySelectorAll(".avatar-option")
+            .forEach(btn => {
+
+                btn.classList.remove(
+                    "selected"
+                );
+
+            });
+
+
+        button.classList.add(
+            "selected"
+        );
+
+    }
+
+
+    /* =========================
+       SAVE PROFILE
+    ========================= */
+
+    document.getElementById(
+        "profileForm"
+    ).addEventListener(
+        "submit",
+        function(e) {
+
+            e.preventDefault();
+
+
+            const name =
+                document.getElementById(
+                    "editName"
+                ).value.trim();
+
+
+            const email =
+                document.getElementById(
+                    "editEmail"
+                ).value.trim();
+
+
+            const phone =
+                document.getElementById(
+                    "editPhone"
+                ).value.trim();
+
+
+            const location =
+                document.getElementById(
+                    "editLocation"
+                ).value.trim();
+
+
+            if (!name || !email) {
+
+                showToast(
+                    "Please enter your name and email."
+                );
+
+                return;
+
+            }
+
+
+            profile.name =
+                name;
+
+            profile.email =
+                email;
+
+            profile.phone =
+                phone;
+
+            profile.location =
+                location;
+
+            profile.avatar =
+                selectedAvatar ||
+                name.charAt(0).toUpperCase();
+
+
+            localStorage.setItem(
+                PROFILE_KEY,
+                JSON.stringify(profile)
+            );
+
+
+            loadProfile();
+
+            closeProfileModal();
+
+
+            showToast(
+                "Profile updated successfully."
+            );
+
+        }
+    );
+
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    function showToast(message) {
+
+        const toast =
+            document.getElementById(
+                "toast"
+            );
+
+
+        document.getElementById(
+            "toastMessage"
+        ).textContent =
+            message;
+
+
+        toast.classList.add("show");
+
+
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2800
+        );
+
+    }
+
+
+    /* =========================
+       SIDEBAR
+    ========================= */
+
+    function toggleSidebar() {
+
+        document
+            .getElementById("sidebar")
+            .classList.toggle("open");
+
+    }
+
+
+    /* =========================
+       CLOSE MODAL ON BACKDROP
+    ========================= */
+
+    document
+        .getElementById("profileModal")
+        .addEventListener(
+            "click",
+            function(e) {
+
+                if (
+                    e.target === this
+                ) {
+
+                    closeProfileModal();
+
+                }
+
+            }
+        );
+
+
+    /* =========================
+       INITIALIZE
+    ========================= */
+
+    loadProfile();
+    
+</script>
+
+</body>
+</html>

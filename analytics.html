@@ -1,0 +1,3009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Analytics | SpendWise</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+
+            --background: #07111f;
+            --sidebar: #091626;
+
+            --card: rgba(17, 33, 52, 0.78);
+            --card-light: rgba(22, 42, 64, 0.85);
+
+            --border: rgba(255,255,255,0.08);
+
+            --mint: #51e6ad;
+            --mint-soft: rgba(81,230,173,0.12);
+
+            --purple: #7569ff;
+            --purple-soft: rgba(117,105,255,0.14);
+
+            --orange: #ffb866;
+            --blue: #63b3ff;
+            --pink: #ff6f96;
+
+            --text: #f4f7fb;
+            --muted: #8da0b5;
+
+            --danger: #ff667c;
+
+            --shadow: 0 20px 45px rgba(0,0,0,0.22);
+        }
+
+        body {
+
+            font-family: "Inter", sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 80% 5%,
+                    rgba(117,105,255,0.10),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 15% 90%,
+                    rgba(81,230,173,0.07),
+                    transparent 30%
+                ),
+                var(--background);
+
+            color: var(--text);
+
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        select {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+
+            width: 255px;
+            height: 100vh;
+
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            padding: 28px 20px;
+
+            background: rgba(7,17,31,0.92);
+
+            backdrop-filter: blur(20px);
+
+            border-right: 1px solid var(--border);
+
+            z-index: 1000;
+
+            display: flex;
+            flex-direction: column;
+
+            transition: 0.3s;
+        }
+
+        .logo {
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 5px 10px 30px;
+        }
+
+        .logo-icon {
+
+            width: 42px;
+            height: 42px;
+
+            border-radius: 14px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--mint),
+                    #23c58f
+                );
+
+            color: #04110c;
+
+            font-size: 20px;
+
+            box-shadow:
+                0 8px 25px rgba(81,230,173,0.25);
+        }
+
+        .logo h2 {
+
+            font-size: 23px;
+            letter-spacing: -0.8px;
+        }
+
+        .logo h2 span {
+            color: var(--mint);
+        }
+
+        .menu-label {
+
+            font-size: 11px;
+
+            color: #63768a;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.4px;
+
+            margin: 15px 12px 10px;
+        }
+
+        .nav-item {
+
+            display: flex;
+            align-items: center;
+
+            gap: 14px;
+
+            padding: 13px 14px;
+
+            margin-bottom: 5px;
+
+            color: #8fa2b7;
+
+            border-radius: 13px;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+            transition: 0.25s;
+        }
+
+        .nav-item i {
+
+            width: 20px;
+
+            text-align: center;
+        }
+
+        .nav-item:hover {
+
+            background: rgba(255,255,255,0.05);
+
+            color: white;
+        }
+
+        .nav-item.active {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(81,230,173,0.16),
+                    rgba(81,230,173,0.05)
+                );
+
+            color: var(--mint);
+
+            border:
+                1px solid rgba(81,230,173,0.12);
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+        }
+
+        .logout {
+            color: #ff8999;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+
+            margin-left: 255px;
+
+            padding: 30px 36px 60px;
+        }
+
+        /* =========================
+           TOP BAR
+        ========================= */
+
+        .topbar {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 32px;
+        }
+
+        .page-heading h1 {
+
+            font-size: 30px;
+
+            letter-spacing: -1px;
+
+            margin-bottom: 7px;
+        }
+
+        .page-heading p {
+
+            color: var(--muted);
+
+            font-size: 14px;
+        }
+
+        .top-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .icon-button {
+
+            width: 43px;
+            height: 43px;
+
+            border-radius: 13px;
+
+            border: 1px solid var(--border);
+
+            background: var(--card);
+
+            color: #bdcad8;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            transition: 0.2s;
+        }
+
+        .icon-button:hover {
+
+            color: var(--mint);
+
+            border-color:
+                rgba(81,230,173,0.25);
+        }
+
+        .profile {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 6px 12px 6px 7px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 14px;
+
+            background: var(--card);
+        }
+
+        .avatar {
+
+            width: 33px;
+            height: 33px;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--purple),
+                    var(--mint)
+                );
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            font-weight: 800;
+        }
+
+        .profile-info strong {
+
+            display: block;
+
+            font-size: 12px;
+        }
+
+        .profile-info span {
+
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            margin-top: 2px;
+        }
+
+        .mobile-menu {
+            display: none;
+        }
+
+        /* =========================
+           FILTER BAR
+        ========================= */
+
+        .analytics-toolbar {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 23px;
+
+            gap: 15px;
+        }
+
+        .analytics-toolbar h3 {
+
+            font-size: 16px;
+        }
+
+        .period-select {
+
+            height: 42px;
+
+            padding: 0 14px;
+
+            border-radius: 11px;
+
+            border:
+                1px solid var(--border);
+
+            background:
+                rgba(11,27,44,0.8);
+
+            color: #c7d2de;
+
+            outline: none;
+
+            font-size: 12px;
+        }
+
+        .period-select option {
+
+            background: #0c1929;
+
+            color: white;
+        }
+
+        /* =========================
+           STAT CARDS
+        ========================= */
+
+        .stats-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+
+            padding: 20px;
+
+            min-height: 125px;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(18,37,58,0.82),
+                    rgba(12,28,46,0.72)
+                );
+
+            border:
+                1px solid var(--border);
+
+            box-shadow: var(--shadow);
+
+            transition: 0.25s;
+        }
+
+        .stat-card:hover {
+
+            transform: translateY(-3px);
+
+            border-color:
+                rgba(255,255,255,0.12);
+        }
+
+        .stat-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+        .stat-label {
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+        .stat-icon {
+
+            width: 38px;
+            height: 38px;
+
+            border-radius: 11px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 14px;
+        }
+
+        .stat-icon.mint {
+
+            color: var(--mint);
+
+            background: var(--mint-soft);
+        }
+
+        .stat-icon.purple {
+
+            color: #a29aff;
+
+            background: var(--purple-soft);
+        }
+
+        .stat-icon.orange {
+
+            color: var(--orange);
+
+            background:
+                rgba(255,184,102,0.12);
+        }
+
+        .stat-icon.pink {
+
+            color: var(--pink);
+
+            background:
+                rgba(255,111,150,0.12);
+        }
+
+        .stat-card h2 {
+
+            font-size: 22px;
+
+            margin-top: 13px;
+
+            letter-spacing: -0.5px;
+        }
+
+        /* =========================
+           CHART GRID
+        ========================= */
+
+        .chart-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1.65fr 1fr;
+
+            gap: 20px;
+
+            margin-bottom: 20px;
+        }
+
+        .chart-card {
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(16,32,50,0.82),
+                    rgba(9,23,38,0.76)
+                );
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 20px;
+
+            padding: 22px;
+
+            box-shadow: var(--shadow);
+
+            min-width: 0;
+        }
+
+        .chart-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 22px;
+        }
+
+        .chart-title h3 {
+
+            font-size: 14px;
+
+            margin-bottom: 6px;
+        }
+
+        .chart-title p {
+
+            color: var(--muted);
+
+            font-size: 10px;
+        }
+
+        .chart-header-icon {
+
+            width: 34px;
+            height: 34px;
+
+            border-radius: 10px;
+
+            background: var(--mint-soft);
+
+            color: var(--mint);
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chart-container {
+
+            height: 275px;
+
+            position: relative;
+        }
+
+        /* =========================
+           CATEGORY CARD
+        ========================= */
+
+        .category-content {
+
+            display: grid;
+
+            grid-template-columns:
+                170px 1fr;
+
+            align-items: center;
+
+            gap: 25px;
+
+            min-height: 275px;
+        }
+
+        .donut-container {
+
+            height: 175px;
+
+            position: relative;
+        }
+
+        .category-list {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 13px;
+        }
+
+        .category-item {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+        }
+
+        .category-left {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            min-width: 0;
+        }
+
+        .category-dot {
+
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            flex-shrink: 0;
+        }
+
+        .category-name {
+
+            color: #aebdca;
+
+            font-size: 10px;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+        }
+
+        .category-value {
+
+            color: #e8eef5;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+        /* =========================
+           LOWER GRID
+        ========================= */
+
+        .lower-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1.2fr 0.8fr;
+
+            gap: 20px;
+        }
+
+        /* =========================
+           INSIGHTS
+        ========================= */
+
+        .insight-card {
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(16,32,50,0.82),
+                    rgba(9,23,38,0.76)
+                );
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 20px;
+
+            padding: 22px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .section-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+        .section-header h3 {
+
+            font-size: 14px;
+        }
+
+        .section-header span {
+
+            color: var(--muted);
+
+            font-size: 10px;
+        }
+
+        .insights {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2,1fr);
+
+            gap: 12px;
+        }
+
+        .insight {
+
+            padding: 16px;
+
+            border-radius: 14px;
+
+            background:
+                rgba(255,255,255,0.025);
+
+            border:
+                1px solid rgba(255,255,255,0.05);
+        }
+
+        .insight-icon {
+
+            width: 35px;
+            height: 35px;
+
+            border-radius: 10px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 12px;
+        }
+
+        .insight h4 {
+
+            font-size: 11px;
+
+            margin-bottom: 6px;
+        }
+
+        .insight p {
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            line-height: 1.6;
+        }
+
+        /* =========================
+           SPENDING SCORE
+        ========================= */
+
+        .score-card {
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(18,37,58,0.82),
+                    rgba(12,28,46,0.72)
+                );
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 20px;
+
+            padding: 22px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .score-wrapper {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 22px;
+
+            margin-top: 8px;
+        }
+
+        .score-circle {
+
+            width: 130px;
+            height: 130px;
+
+            border-radius: 50%;
+
+            background:
+                conic-gradient(
+                    var(--mint) 0deg,
+                    var(--mint) var(--score),
+                    rgba(255,255,255,0.06) var(--score),
+                    rgba(255,255,255,0.06) 360deg
+                );
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            position: relative;
+
+            flex-shrink: 0;
+        }
+
+        .score-circle::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 101px;
+            height: 101px;
+
+            border-radius: 50%;
+
+            background: #0d1d2f;
+        }
+
+        .score-number {
+
+            position: relative;
+
+            text-align: center;
+        }
+
+        .score-number strong {
+
+            display: block;
+
+            font-size: 25px;
+        }
+
+        .score-number span {
+
+            color: var(--muted);
+
+            font-size: 9px;
+        }
+
+        .score-info h4 {
+
+            font-size: 13px;
+
+            margin-bottom: 8px;
+        }
+
+        .score-info p {
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            line-height: 1.7;
+        }
+
+        /* =========================
+           PROGRESS
+        ========================= */
+
+        .progress-section {
+
+            margin-top: 18px;
+        }
+
+        .progress-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 8px;
+
+            font-size: 10px;
+        }
+
+        .progress-header span:first-child {
+            color: var(--muted);
+        }
+
+        .progress-header span:last-child {
+            color: var(--mint);
+            font-weight: 700;
+        }
+
+        .progress {
+
+            height: 6px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,0.06);
+
+            overflow: hidden;
+        }
+
+        .progress-bar {
+
+            height: 100%;
+
+            width: 0%;
+
+            border-radius: inherit;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--mint),
+                    #8bf0cb
+                );
+
+            transition: width 0.7s ease;
+        }
+
+        /* =========================
+           EMPTY STATE
+        ========================= */
+
+        .empty-message {
+
+            display: none;
+
+            padding: 35px;
+
+            text-align: center;
+
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+        .empty-message i {
+
+            display: block;
+
+            color: var(--mint);
+
+            font-size: 25px;
+
+            margin-bottom: 12px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1150px) {
+
+            .stats-grid {
+
+                grid-template-columns:
+                    repeat(2,1fr);
+            }
+
+            .chart-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .lower-grid {
+
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 880px) {
+
+            .sidebar {
+
+                transform:
+                    translateX(-100%);
+            }
+
+            .sidebar.show {
+
+                transform:
+                    translateX(0);
+            }
+
+            .main {
+
+                margin-left: 0;
+
+                padding:
+                    25px 20px 50px;
+            }
+
+            .mobile-menu {
+
+                display: flex;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .stats-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .category-content {
+
+                grid-template-columns: 1fr;
+            }
+
+            .donut-container {
+
+                width: 190px;
+
+                margin: auto;
+            }
+
+            .analytics-toolbar {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .period-select {
+
+                width: 100%;
+            }
+
+            .insights {
+
+                grid-template-columns: 1fr;
+            }
+
+            .score-wrapper {
+
+                flex-direction: column;
+
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .main {
+
+                padding:
+                    20px 14px 40px;
+            }
+
+            .page-heading h1 {
+
+                font-size: 25px;
+            }
+
+            .profile-info {
+
+                display: none;
+            }
+
+            .profile {
+
+                padding: 5px;
+
+                border: none;
+
+                background: transparent;
+            }
+
+            .notification {
+
+                display: none;
+            }
+
+            .chart-card,
+            .insight-card,
+            .score-card {
+
+                padding: 17px;
+            }
+
+            .chart-container {
+
+                height: 230px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            <i class="fa-solid fa-wallet"></i>
+        </div>
+
+        <h2>
+            Spend<span>Wise</span>
+        </h2>
+
+    </div>
+
+
+    <div class="menu-label">
+        Main Menu
+    </div>
+
+
+    <a href="dashboard.html" class="nav-item">
+        <i class="fa-solid fa-house"></i>
+        Dashboard
+    </a>
+
+
+    <a href="transactions.html" class="nav-item">
+        <i class="fa-solid fa-arrow-right-arrow-left"></i>
+        Transactions
+    </a>
+
+
+    <a href="analytics.html" class="nav-item active">
+        <i class="fa-solid fa-chart-pie"></i>
+        Analytics
+    </a>
+
+
+    <a href="budget.html" class="nav-item">
+        <i class="fa-solid fa-wallet"></i>
+        Budgets
+    </a>
+
+
+    <a href="goals.html" class="nav-item">
+        <i class="fa-solid fa-bullseye"></i>
+        Goals
+    </a>
+
+
+    <div class="menu-label">
+        Account
+    </div>
+
+
+    <a href="profile.html" class="nav-item">
+        <i class="fa-regular fa-user"></i>
+        Profile
+    </a>
+
+
+    <a href="settings.html" class="nav-item">
+        <i class="fa-solid fa-gear"></i>
+        Settings
+    </a>
+
+
+    <div class="sidebar-bottom">
+
+        <a href="index.html" class="nav-item logout">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            Logout
+        </a>
+
+    </div>
+
+</aside>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="main">
+
+    <!-- TOP BAR -->
+
+    <div class="topbar">
+
+        <div style="display:flex;align-items:center;gap:14px;">
+
+            <button
+                class="icon-button mobile-menu"
+                onclick="toggleSidebar()"
+            >
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div class="page-heading">
+
+                <h1>Analytics</h1>
+
+                <p>
+                    Understand your spending habits at a glance.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="top-actions">
+
+            <button class="icon-button notification">
+
+                <i class="fa-regular fa-bell"></i>
+
+            </button>
+
+
+            <a href="profile.html" class="profile">
+
+                <div class="avatar">
+                    M
+                </div>
+
+                <div class="profile-info">
+
+                    <strong>Mariya</strong>
+
+                    <span>
+                        My Account
+                    </span>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- TOOLBAR -->
+
+    <div class="analytics-toolbar">
+
+        <div>
+
+            <h3>
+                Spending Overview
+            </h3>
+
+        </div>
+
+
+        <select
+            class="period-select"
+            id="periodSelect"
+            onchange="updateAnalytics()"
+        >
+
+            <option value="thisMonth">
+                This Month
+            </option>
+
+            <option value="lastMonth">
+                Last Month
+            </option>
+
+            <option value="thisYear">
+                This Year
+            </option>
+
+            <option value="all">
+                All Time
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- =========================
+         STAT CARDS
+    ========================= -->
+
+    <section class="stats-grid">
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <span class="stat-label">
+                    Total Spent
+                </span>
+
+                <div class="stat-icon pink">
+                    <i class="fa-solid fa-arrow-trend-down"></i>
+                </div>
+
+            </div>
+
+            <h2 id="totalSpent">
+                ₹0
+            </h2>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <span class="stat-label">
+                    Daily Average
+                </span>
+
+                <div class="stat-icon purple">
+                    <i class="fa-solid fa-calendar-day"></i>
+                </div>
+
+            </div>
+
+            <h2 id="dailyAverage">
+                ₹0
+            </h2>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <span class="stat-label">
+                    Largest Expense
+                </span>
+
+                <div class="stat-icon orange">
+                    <i class="fa-solid fa-arrow-up"></i>
+                </div>
+
+            </div>
+
+            <h2 id="largestExpense">
+                ₹0
+            </h2>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <span class="stat-label">
+                    Transactions
+                </span>
+
+                <div class="stat-icon mint">
+                    <i class="fa-solid fa-receipt"></i>
+                </div>
+
+            </div>
+
+            <h2 id="totalTransactions">
+                0
+            </h2>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         CHARTS
+    ========================= -->
+
+    <section class="chart-grid">
+
+        <!-- Spending Trend -->
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <div class="chart-title">
+
+                    <h3>
+                        Spending Trend
+                    </h3>
+
+                    <p>
+                        Your expenses over time
+                    </p>
+
+                </div>
+
+                <div class="chart-header-icon">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                </div>
+
+            </div>
+
+
+            <div class="chart-container">
+
+                <canvas id="spendingChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- Category Distribution -->
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <div class="chart-title">
+
+                    <h3>
+                        Spending by Category
+                    </h3>
+
+                    <p>
+                        Where your money goes
+                    </p>
+
+                </div>
+
+                <div class="chart-header-icon">
+
+                    <i class="fa-solid fa-chart-pie"></i>
+
+                </div>
+
+            </div>
+
+
+            <div class="category-content">
+
+                <div class="donut-container">
+
+                    <canvas id="categoryChart"></canvas>
+
+                </div>
+
+
+                <div
+                    class="category-list"
+                    id="categoryList"
+                >
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         LOWER SECTION
+    ========================= -->
+
+    <section class="lower-grid">
+
+        <!-- INSIGHTS -->
+
+        <div class="insight-card">
+
+            <div class="section-header">
+
+                <h3>
+                    Smart Insights
+                </h3>
+
+                <span>
+                    Based on your spending
+                </span>
+
+            </div>
+
+
+            <div class="insights">
+
+                <div class="insight">
+
+                    <div
+                        class="insight-icon"
+                        style="
+                            color:var(--orange);
+                            background:rgba(255,184,102,0.12);
+                        "
+                    >
+
+                        <i class="fa-solid fa-fire"></i>
+
+                    </div>
+
+                    <h4>
+                        Biggest Category
+                    </h4>
+
+                    <p id="biggestCategory">
+                        Add expenses to discover your
+                        biggest spending category.
+                    </p>
+
+                </div>
+
+
+                <div class="insight">
+
+                    <div
+                        class="insight-icon"
+                        style="
+                            color:var(--purple);
+                            background:var(--purple-soft);
+                        "
+                    >
+
+                        <i class="fa-solid fa-receipt"></i>
+
+                    </div>
+
+                    <h4>
+                        Average Transaction
+                    </h4>
+
+                    <p id="averageTransaction">
+                        Your average transaction will
+                        appear here.
+                    </p>
+
+                </div>
+
+
+                <div class="insight">
+
+                    <div
+                        class="insight-icon"
+                        style="
+                            color:var(--mint);
+                            background:var(--mint-soft);
+                        "
+                    >
+
+                        <i class="fa-solid fa-lightbulb"></i>
+
+                    </div>
+
+                    <h4>
+                        Money Tip
+                    </h4>
+
+                    <p id="moneyTip">
+                        Track your expenses regularly
+                        to understand your habits better.
+                    </p>
+
+                </div>
+
+
+                <div class="insight">
+
+                    <div
+                        class="insight-icon"
+                        style="
+                            color:var(--blue);
+                            background:rgba(99,179,255,0.12);
+                        "
+                    >
+
+                        <i class="fa-solid fa-calendar-check"></i>
+
+                    </div>
+
+                    <h4>
+                        Spending Frequency
+                    </h4>
+
+                    <p id="spendingFrequency">
+                        Your spending frequency will
+                        appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SCORE -->
+
+        <div class="score-card">
+
+            <div class="section-header">
+
+                <h3>
+                    Spending Health
+                </h3>
+
+                <span>
+                    Smart Score
+                </span>
+
+            </div>
+
+
+            <div class="score-wrapper">
+
+                <div
+                    class="score-circle"
+                    id="scoreCircle"
+                    style="--score: 0deg;"
+                >
+
+                    <div class="score-number">
+
+                        <strong id="scoreNumber">
+                            0
+                        </strong>
+
+                        <span>
+                            / 100
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="score-info">
+
+                    <h4 id="scoreTitle">
+                        Start tracking
+                    </h4>
+
+                    <p id="scoreDescription">
+                        Add a few expenses and SpendWise
+                        will calculate your spending health.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="progress-section">
+
+                <div class="progress-header">
+
+                    <span>
+                        Financial discipline
+                    </span>
+
+                    <span id="scorePercent">
+                        0%
+                    </span>
+
+                </div>
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar"
+                        id="scoreProgress"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- EMPTY MESSAGE -->
+
+    <div
+        class="empty-message"
+        id="emptyMessage"
+    >
+
+        <i class="fa-solid fa-chart-column"></i>
+
+        Add some expenses to unlock your
+        personalized analytics.
+
+    </div>
+
+</main>
+
+
+<script>
+
+    /* =========================
+       GLOBAL DATA
+    ========================= */
+
+    let expenses =
+        JSON.parse(
+            localStorage.getItem("spendwiseExpenses")
+        ) || [];
+
+
+    let spendingChart = null;
+    let categoryChart = null;
+
+
+    /* =========================
+       CATEGORY INFORMATION
+    ========================= */
+
+    const categoryColors = {
+
+        "Food & Dining": "#ffab66",
+
+        "Shopping": "#c18cff",
+
+        "Transport": "#63b3ff",
+
+        "Entertainment": "#ff6f96",
+
+        "Bills & Utilities": "#f7d063",
+
+        "Health": "#ff7186",
+
+        "Education": "#59d5ff",
+
+        "Travel": "#7569ff",
+
+        "Groceries": "#51e6ad",
+
+        "Other": "#9aaabc"
+
+    };
+
+
+    /* =========================
+       FORMAT CURRENCY
+    ========================= */
+
+    function formatCurrency(amount) {
+
+        return new Intl.NumberFormat(
+            "en-IN",
+            {
+                style: "currency",
+                currency: "INR",
+                maximumFractionDigits: 0
+            }
+        ).format(amount);
+
+    }
+
+
+    /* =========================
+       DATE FILTER
+    ========================= */
+
+    function filterByPeriod(data, period) {
+
+        if (period === "all") {
+            return data;
+        }
+
+
+        const today = new Date();
+
+
+        return data.filter(expense => {
+
+            if (!expense.date) {
+                return false;
+            }
+
+
+            const date =
+                new Date(
+                    expense.date + "T00:00:00"
+                );
+
+
+            if (period === "thisMonth") {
+
+                return (
+                    date.getMonth() ===
+                        today.getMonth() &&
+
+                    date.getFullYear() ===
+                        today.getFullYear()
+                );
+
+            }
+
+
+            if (period === "lastMonth") {
+
+                const lastMonth =
+                    new Date(
+                        today.getFullYear(),
+                        today.getMonth() - 1,
+                        1
+                    );
+
+
+                return (
+                    date.getMonth() ===
+                        lastMonth.getMonth() &&
+
+                    date.getFullYear() ===
+                        lastMonth.getFullYear()
+                );
+
+            }
+
+
+            if (period === "thisYear") {
+
+                return (
+                    date.getFullYear() ===
+                    today.getFullYear()
+                );
+
+            }
+
+
+            return true;
+
+        });
+
+    }
+
+
+    /* =========================
+       UPDATE ANALYTICS
+    ========================= */
+
+    function updateAnalytics() {
+
+        expenses =
+            JSON.parse(
+                localStorage.getItem("spendwiseExpenses")
+            ) || [];
+
+
+        const period =
+            document
+                .getElementById("periodSelect")
+                .value;
+
+
+        const data =
+            filterByPeriod(
+                expenses,
+                period
+            );
+
+
+        updateStats(data);
+
+        updateTrendChart(data);
+
+        updateCategoryChart(data);
+
+        updateInsights(data);
+
+        updateScore(data);
+
+    }
+
+
+    /* =========================
+       STATS
+    ========================= */
+
+    function updateStats(data) {
+
+        const total =
+            data.reduce(
+                (sum, expense) =>
+                    sum +
+                    (Number(expense.amount) || 0),
+                0
+            );
+
+
+        const largest =
+            data.length
+            ? Math.max(
+                ...data.map(
+                    expense =>
+                        Number(expense.amount) || 0
+                )
+            )
+            : 0;
+
+
+        let dailyAverage = 0;
+
+
+        if (data.length > 0) {
+
+            const dates =
+                data
+                    .map(expense =>
+                        new Date(
+                            expense.date +
+                            "T00:00:00"
+                        )
+                    )
+                    .filter(date =>
+                        !isNaN(date)
+                    );
+
+
+            if (dates.length > 0) {
+
+                const minDate =
+                    new Date(
+                        Math.min(
+                            ...dates.map(
+                                date =>
+                                    date.getTime()
+                            )
+                        )
+                    );
+
+
+                const maxDate =
+                    new Date(
+                        Math.max(
+                            ...dates.map(
+                                date =>
+                                    date.getTime()
+                            )
+                        )
+                    );
+
+
+                const difference =
+                    Math.max(
+                        1,
+                        Math.ceil(
+                            (
+                                maxDate -
+                                minDate
+                            ) /
+                            (1000 * 60 * 60 * 24)
+                        ) + 1
+                    );
+
+
+                dailyAverage =
+                    total / difference;
+
+            }
+
+        }
+
+
+        document
+            .getElementById("totalSpent")
+            .textContent =
+            formatCurrency(total);
+
+
+        document
+            .getElementById("dailyAverage")
+            .textContent =
+            formatCurrency(dailyAverage);
+
+
+        document
+            .getElementById("largestExpense")
+            .textContent =
+            formatCurrency(largest);
+
+
+        document
+            .getElementById("totalTransactions")
+            .textContent =
+            data.length;
+
+    }
+
+
+    /* =========================
+       SPENDING TREND
+    ========================= */
+
+    function updateTrendChart(data) {
+
+        const ctx =
+            document
+                .getElementById(
+                    "spendingChart"
+                )
+                .getContext("2d");
+
+
+        const grouped = {};
+
+
+        data.forEach(expense => {
+
+            if (!expense.date) {
+                return;
+            }
+
+
+            const date =
+                new Date(
+                    expense.date +
+                    "T00:00:00"
+                );
+
+
+            const key =
+                date.toLocaleDateString(
+                    "en-IN",
+                    {
+                        day: "2-digit",
+                        month: "short"
+                    }
+                );
+
+
+            grouped[key] =
+                (
+                    grouped[key] || 0
+                ) +
+                (
+                    Number(expense.amount) || 0
+                );
+
+        });
+
+
+        const entries =
+            Object.entries(grouped);
+
+
+        entries.sort(
+            (a,b) =>
+                new Date(a[0]) -
+                new Date(b[0])
+        );
+
+
+        const labels =
+            entries.map(
+                item => item[0]
+            );
+
+
+        const values =
+            entries.map(
+                item => item[1]
+            );
+
+
+        if (spendingChart) {
+            spendingChart.destroy();
+        }
+
+
+        const gradient =
+            ctx.createLinearGradient(
+                0,
+                0,
+                0,
+                280
+            );
+
+
+        gradient.addColorStop(
+            0,
+            "rgba(81,230,173,0.25)"
+        );
+
+
+        gradient.addColorStop(
+            1,
+            "rgba(81,230,173,0)"
+        );
+
+
+        spendingChart =
+            new Chart(
+                ctx,
+                {
+                    type: "line",
+
+                    data: {
+
+                        labels:
+                            labels.length
+                            ? labels
+                            : ["No data"],
+
+                        datasets: [
+
+                            {
+                                label:
+                                    "Expenses",
+
+                                data:
+                                    values.length
+                                    ? values
+                                    : [0],
+
+                                borderColor:
+                                    "#51e6ad",
+
+                                backgroundColor:
+                                    gradient,
+
+                                borderWidth: 2,
+
+                                pointBackgroundColor:
+                                    "#51e6ad",
+
+                                pointBorderColor:
+                                    "#07111f",
+
+                                pointBorderWidth: 2,
+
+                                pointRadius: 4,
+
+                                tension: 0.4,
+
+                                fill: true
+
+                            }
+
+                        ]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio:
+                            false,
+
+                        plugins: {
+
+                            legend: {
+                                display: false
+                            },
+
+                            tooltip: {
+
+                                backgroundColor:
+                                    "#0d1d2f",
+
+                                titleColor:
+                                    "#ffffff",
+
+                                bodyColor:
+                                    "#b9c7d5",
+
+                                borderColor:
+                                    "rgba(255,255,255,0.08)",
+
+                                borderWidth: 1,
+
+                                padding: 11,
+
+                                callbacks: {
+
+                                    label:
+                                        function(context) {
+
+                                            return (
+                                                " ₹" +
+                                                Number(
+                                                    context.raw
+                                                ).toLocaleString(
+                                                    "en-IN"
+                                                )
+                                            );
+
+                                        }
+
+                                }
+
+                            }
+
+                        },
+
+                        scales: {
+
+                            x: {
+
+                                grid: {
+                                    display: false
+                                },
+
+                                ticks: {
+
+                                    color:
+                                        "#708499",
+
+                                    font: {
+                                        size: 9
+                                    }
+
+                                }
+
+                            },
+
+                            y: {
+
+                                beginAtZero: true,
+
+                                grid: {
+
+                                    color:
+                                        "rgba(255,255,255,0.05)"
+
+                                },
+
+                                ticks: {
+
+                                    color:
+                                        "#708499",
+
+                                    font: {
+                                        size: 9
+                                    },
+
+                                    callback:
+                                        function(value) {
+
+                                            return "₹" +
+                                                value;
+
+                                        }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+            );
+
+    }
+
+
+    /* =========================
+       CATEGORY CHART
+    ========================= */
+
+    function updateCategoryChart(data) {
+
+        const categoryTotals = {};
+
+
+        data.forEach(expense => {
+
+            const category =
+                expense.category ||
+                "Other";
+
+
+            categoryTotals[category] =
+                (
+                    categoryTotals[category] ||
+                    0
+                ) +
+                (
+                    Number(expense.amount) ||
+                    0
+                );
+
+        });
+
+
+        const sorted =
+            Object.entries(
+                categoryTotals
+            ).sort(
+                (a,b) =>
+                    b[1] - a[1]
+            );
+
+
+        const labels =
+            sorted.map(
+                item => item[0]
+            );
+
+
+        const values =
+            sorted.map(
+                item => item[1]
+            );
+
+
+        const colors =
+            labels.map(
+                label =>
+                    categoryColors[label] ||
+                    "#9aaabc"
+            );
+
+
+        const ctx =
+            document
+                .getElementById(
+                    "categoryChart"
+                )
+                .getContext("2d");
+
+
+        if (categoryChart) {
+            categoryChart.destroy();
+        }
+
+
+        categoryChart =
+            new Chart(
+                ctx,
+                {
+
+                    type: "doughnut",
+
+                    data: {
+
+                        labels:
+                            labels.length
+                            ? labels
+                            : ["No expenses"],
+
+                        datasets: [
+
+                            {
+
+                                data:
+                                    values.length
+                                    ? values
+                                    : [1],
+
+                                backgroundColor:
+                                    colors.length
+                                    ? colors
+                                    : ["#24364b"],
+
+                                borderWidth: 0,
+
+                                hoverOffset: 5
+
+                            }
+
+                        ]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio:
+                            false,
+
+                        cutout: "72%",
+
+                        plugins: {
+
+                            legend: {
+                                display: false
+                            },
+
+                            tooltip: {
+
+                                backgroundColor:
+                                    "#0d1d2f",
+
+                                padding: 10,
+
+                                callbacks: {
+
+                                    label:
+                                        function(context) {
+
+                                            return (
+                                                " " +
+                                                context.label +
+                                                ": " +
+                                                formatCurrency(
+                                                    context.raw
+                                                )
+                                            );
+
+                                        }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+            );
+
+
+        updateCategoryList(
+            sorted
+        );
+
+    }
+
+
+    /* =========================
+       CATEGORY LIST
+    ========================= */
+
+    function updateCategoryList(sorted) {
+
+        const container =
+            document.getElementById(
+                "categoryList"
+            );
+
+
+        container.innerHTML = "";
+
+
+        if (!sorted.length) {
+
+            container.innerHTML = `
+
+                <div
+                    style="
+                        color:var(--muted);
+                        font-size:10px;
+                        line-height:1.6;
+                    "
+                >
+                    No category data yet.
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        sorted
+            .slice(0,5)
+            .forEach(
+                ([category, amount]) => {
+
+                    const color =
+                        categoryColors[
+                            category
+                        ] || "#9aaabc";
+
+
+                    const item =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    item.className =
+                        "category-item";
+
+
+                    item.innerHTML = `
+
+                        <div
+                            class="category-left"
+                        >
+
+                            <span
+                                class="category-dot"
+                                style="
+                                    background:${color};
+                                "
+                            ></span>
+
+                            <span
+                                class="category-name"
+                            >
+                                ${escapeHTML(
+                                    category
+                                )}
+                            </span>
+
+                        </div>
+
+                        <span
+                            class="category-value"
+                        >
+                            ${formatCurrency(
+                                amount
+                            )}
+                        </span>
+
+                    `;
+
+
+                    container.appendChild(
+                        item
+                    );
+
+                }
+            );
+
+    }
+
+
+    /* =========================
+       INSIGHTS
+    ========================= */
+
+    function updateInsights(data) {
+
+        if (!data.length) {
+
+            document
+                .getElementById(
+                    "biggestCategory"
+                )
+                .textContent =
+                "Add expenses to discover your biggest spending category.";
+
+
+            document
+                .getElementById(
+                    "averageTransaction"
+                )
+                .textContent =
+                "Your average transaction will appear here.";
+
+
+            document
+                .getElementById(
+                    "spendingFrequency"
+                )
+                .textContent =
+                "Your spending frequency will appear here.";
+
+            return;
+
+        }
+
+
+        const categories = {};
+
+
+        data.forEach(expense => {
+
+            const category =
+                expense.category ||
+                "Other";
+
+
+            categories[category] =
+                (
+                    categories[category] ||
+                    0
+                ) +
+                (
+                    Number(expense.amount) ||
+                    0
+                );
+
+        });
+
+
+        const biggest =
+            Object.entries(categories)
+                .sort(
+                    (a,b) =>
+                        b[1] - a[1]
+                )[0];
+
+
+        const total =
+            data.reduce(
+                (sum, expense) =>
+                    sum +
+                    (
+                        Number(expense.amount) ||
+                        0
+                    ),
+                0
+            );
+
+
+        const average =
+            total / data.length;
+
+
+        document
+            .getElementById(
+                "biggestCategory"
+            )
+            .textContent =
+            `${biggest[0]} is your biggest spending category at ${formatCurrency(biggest[1])}.`;
+
+
+        document
+            .getElementById(
+                "averageTransaction"
+            )
+            .textContent =
+            `You spend an average of ${formatCurrency(average)} each time you make an expense.`;
+
+
+        /* Money tip */
+
+        if (biggest[1] > total * 0.4) {
+
+            document
+                .getElementById(
+                    "moneyTip"
+                )
+                .textContent =
+                `${biggest[0]} takes up a large part of your spending. Setting a small limit here could improve your savings.`;
+
+        } else {
+
+            document
+                .getElementById(
+                    "moneyTip"
+                )
+                .textContent =
+                "Your spending is spread across categories. Keep tracking regularly to maintain good control.";
+
+        }
+
+
+        /* Frequency */
+
+        if (data.length === 1) {
+
+            document
+                .getElementById(
+                    "spendingFrequency"
+                )
+                .textContent =
+                "You have recorded one transaction in this period.";
+
+        } else {
+
+            document
+                .getElementById(
+                    "spendingFrequency"
+                )
+                .textContent =
+                `You recorded ${data.length} transactions in this period, averaging ${formatCurrency(average)} per transaction.`;
+
+        }
+
+    }
+
+
+    /* =========================
+       SPENDING SCORE
+    ========================= */
+
+    function updateScore(data) {
+
+        if (!data.length) {
+
+            setScore(
+                0,
+                "Start tracking",
+                "Add a few expenses and SpendWise will calculate your spending health."
+            );
+
+            return;
+
+        }
+
+
+        const total =
+            data.reduce(
+                (sum, expense) =>
+                    sum +
+                    (
+                        Number(expense.amount) ||
+                        0
+                    ),
+                0
+            );
+
+
+        const average =
+            total / data.length;
+
+
+        /*
+            This is a simple front-end
+            spending-health indicator.
+
+            Lower average transaction
+            + diversified categories
+            = better score.
+        */
+
+
+        const categories =
+            new Set(
+                data.map(
+                    expense =>
+                        expense.category ||
+                        "Other"
+                )
+            );
+
+
+        let score = 70;
+
+
+        if (average < 300) {
+            score += 12;
+        } else if (average < 700) {
+            score += 6;
+        } else if (average > 1500) {
+            score -= 12;
+        }
+
+
+        if (categories.size >= 4) {
+            score += 8;
+        } else if (categories.size === 1) {
+            score -= 8;
+        }
+
+
+        score =
+            Math.max(
+                20,
+                Math.min(
+                    100,
+                    score
+                )
+            );
+
+
+        let title;
+        let description;
+
+
+        if (score >= 85) {
+
+            title =
+                "Excellent control";
+
+            description =
+                "Your spending pattern looks well managed. Keep maintaining your current habits.";
+
+        } else if (score >= 70) {
+
+            title =
+                "Good balance";
+
+            description =
+                "You're doing well. A little more attention to your biggest category could improve your score.";
+
+        } else {
+
+            title =
+                "Needs attention";
+
+            description =
+                "Consider reviewing your largest expenses and setting category limits.";
+
+        }
+
+
+        setScore(
+            score,
+            title,
+            description
+        );
+
+    }
+
+
+    /* =========================
+       SET SCORE
+    ========================= */
+
+    function setScore(
+        score,
+        title,
+        description
+    ) {
+
+        document
+            .getElementById(
+                "scoreNumber"
+            )
+            .textContent =
+            Math.round(score);
+
+
+        document
+            .getElementById(
+                "scoreTitle"
+            )
+            .textContent =
+            title;
+
+
+        document
+            .getElementById(
+                "scoreDescription"
+            )
+            .textContent =
+            description;
+
+
+        document
+            .getElementById(
+                "scorePercent"
+            )
+            .textContent =
+            Math.round(score) + "%";
+
+
+        document
+            .getElementById(
+                "scoreProgress"
+            )
+            .style.width =
+            score + "%";
+
+
+        document
+            .getElementById(
+                "scoreCircle"
+            )
+            .style
+            .setProperty(
+                "--score",
+                `${score * 3.6}deg`
+            );
+
+    }
+
+
+    /* =========================
+       ESCAPE HTML
+    ========================= */
+
+    function escapeHTML(value) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent =
+            value == null
+            ? ""
+            : String(value);
+
+        return div.innerHTML;
+
+    }
+
+
+    /* =========================
+       SIDEBAR
+    ========================= */
+
+    function toggleSidebar() {
+
+        document
+            .getElementById("sidebar")
+            .classList
+            .toggle("show");
+
+    }
+
+
+    /* =========================
+       INITIAL LOAD
+    ========================= */
+
+    updateAnalytics();
+
+
+    /* Refresh if localStorage changes */
+
+    window.addEventListener(
+        "storage",
+        function() {
+
+            updateAnalytics();
+
+        }
+    );
+
+</script>
+
+</body>
+</html>

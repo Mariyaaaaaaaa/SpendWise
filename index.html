@@ -1,0 +1,1320 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SpendWise | Expense Tracker</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+    <style>
+
+        /* =================================
+           GLOBAL SETTINGS
+        ================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            overflow: hidden;
+        }
+
+
+        /* =================================
+           LOADING PAGE
+        ================================= */
+
+        #loader {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background:
+
+                radial-gradient(
+                    circle at top right,
+                    rgba(92, 64, 255, 0.22),
+                    transparent 35%
+                ),
+
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(0, 255, 170, 0.12),
+                    transparent 35%
+                ),
+
+                linear-gradient(
+                    135deg,
+                    #07111f,
+                    #0b1728,
+                    #101b30
+                );
+
+            z-index: 9999;
+
+            transition:
+                opacity 0.8s ease,
+                visibility 0.8s ease;
+        }
+
+
+        /* =================================
+           TOP NAVIGATION
+        ================================= */
+
+        .top-nav {
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+
+            padding: 25px 45px;
+
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            z-index: 20;
+        }
+
+
+        /* Small logo in navigation */
+
+        .nav-logo {
+
+            color: white;
+
+            font-size: 22px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.7px;
+        }
+
+
+        .nav-logo span {
+
+            color: #51e6ad;
+        }
+
+
+        /* Navigation buttons */
+
+        .nav-links {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+
+        .nav-links a {
+
+            text-decoration: none;
+
+            color: #d7deea;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+            padding: 10px 18px;
+
+            border-radius: 10px;
+
+            transition: all 0.3s ease;
+        }
+
+
+        .nav-links a:hover {
+
+            color: white;
+
+            background: rgba(255,255,255,0.08);
+
+            transform: translateY(-2px);
+        }
+
+
+        /* Register button */
+
+        .register-btn {
+
+            border: 1px solid rgba(81,230,173,0.35);
+
+            background: rgba(81,230,173,0.08);
+
+            color: #65e8b8 !important;
+        }
+
+
+        .register-btn:hover {
+
+            background: #51e6ad !important;
+
+            color: #07111f !important;
+
+            border-color: #51e6ad;
+
+            box-shadow:
+                0 8px 25px rgba(81,230,173,0.25);
+        }
+
+
+        /* =================================
+           DECORATIVE BACKGROUND
+        ================================= */
+
+        .background-blur {
+
+            position: absolute;
+
+            width: 350px;
+            height: 350px;
+
+            border-radius: 50%;
+
+            background: rgba(73, 255, 189, 0.08);
+
+            filter: blur(90px);
+
+            animation:
+                floatingBlur 7s ease-in-out infinite alternate;
+        }
+
+
+        .blur-one {
+
+            top: -100px;
+            right: -80px;
+        }
+
+
+        .blur-two {
+
+            bottom: -120px;
+            left: -90px;
+
+            background: rgba(109, 90, 255, 0.12);
+
+            animation-delay: 1.5s;
+        }
+
+
+        @keyframes floatingBlur {
+
+            from {
+                transform: translateY(0px);
+            }
+
+            to {
+                transform: translateY(50px);
+            }
+        }
+
+
+        /* =================================
+           MAIN LOADER CONTENT
+        ================================= */
+
+        .loader-container {
+
+            width: 100%;
+
+            max-width: 600px;
+
+            text-align: center;
+
+            position: relative;
+
+            padding: 30px;
+
+            z-index: 10;
+        }
+
+
+        /* =================================
+           BRAND
+        ================================= */
+
+        .brand {
+
+            margin-bottom: 25px;
+
+            opacity: 0;
+
+            transform: translateY(-15px);
+
+            animation:
+                showBrand 0.8s ease forwards;
+        }
+
+
+        .brand-name {
+
+            font-size: 38px;
+
+            font-weight: 800;
+
+            letter-spacing: -1.5px;
+
+            color: white;
+        }
+
+
+        .brand-name span {
+
+            color: #51e6ad;
+        }
+
+
+        @keyframes showBrand {
+
+            to {
+
+                opacity: 1;
+
+                transform: translateY(0);
+            }
+        }
+
+
+        /* =================================
+           MONEY ANIMATION
+        ================================= */
+
+        .money-animation {
+
+            width: 260px;
+            height: 260px;
+
+            position: relative;
+
+            margin: auto;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        /* =================================
+           PROGRESS RING
+        ================================= */
+
+        .progress-ring {
+
+            position: absolute;
+
+            width: 220px;
+            height: 220px;
+
+            border-radius: 50%;
+
+            background:
+
+                conic-gradient(
+                    #51e6ad 0deg,
+                    #7e6cff 0deg,
+                    rgba(255,255,255,0.08) 0deg
+                );
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            box-shadow:
+
+                0 0 35px rgba(81,230,173,0.1),
+
+                inset 0 0 25px rgba(81,230,173,0.05);
+        }
+
+
+        .progress-ring::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 196px;
+            height: 196px;
+
+            border-radius: 50%;
+
+            background: #0b1728;
+        }
+
+
+        /* =================================
+           CENTRAL ₹ COIN
+        ================================= */
+
+        .money-coin {
+
+            position: absolute;
+
+            width: 95px;
+            height: 95px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 44px;
+
+            font-weight: 800;
+
+            color: #07111f;
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    #79f6c8,
+                    #41d99f
+                );
+
+            box-shadow:
+
+                0 0 0 10px rgba(81,230,173,0.06),
+
+                0 0 40px rgba(81,230,173,0.35);
+
+            z-index: 4;
+
+            animation:
+                coinPulse 1.8s ease-in-out infinite;
+        }
+
+
+        @keyframes coinPulse {
+
+            0%,
+            100% {
+
+                transform: scale(1);
+
+                box-shadow:
+                    0 0 0 10px rgba(81,230,173,0.06),
+                    0 0 35px rgba(81,230,173,0.25);
+            }
+
+            50% {
+
+                transform: scale(1.08);
+
+                box-shadow:
+                    0 0 0 18px rgba(81,230,173,0.02),
+                    0 0 55px rgba(81,230,173,0.5);
+            }
+        }
+
+
+        /* =================================
+           EXPENSE ICONS
+        ================================= */
+
+        .expense-icon {
+
+            position: absolute;
+
+            width: 46px;
+            height: 46px;
+
+            border-radius: 14px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 17px;
+
+            color: white;
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.12),
+                    rgba(255,255,255,0.04)
+                );
+
+            border: 1px solid rgba(255,255,255,0.12);
+
+            backdrop-filter: blur(12px);
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,0.2);
+
+            z-index: 5;
+
+            animation:
+                iconFloat 2.5s ease-in-out infinite;
+        }
+
+
+        .food {
+
+            top: 5px;
+            left: 107px;
+
+            animation-delay: 0s;
+        }
+
+
+        .shopping {
+
+            top: 65px;
+            right: 0;
+
+            animation-delay: .3s;
+        }
+
+
+        .transport {
+
+            bottom: 25px;
+            right: 25px;
+
+            animation-delay: .6s;
+        }
+
+
+        .entertainment {
+
+            bottom: 20px;
+            left: 25px;
+
+            animation-delay: .9s;
+        }
+
+
+        .bills {
+
+            top: 65px;
+            left: 0;
+
+            animation-delay: 1.2s;
+        }
+
+
+        @keyframes iconFloat {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+
+        /* =================================
+           LOADING TEXT
+        ================================= */
+
+        .loading-title {
+
+            margin-top: 25px;
+
+            font-size: 21px;
+
+            font-weight: 600;
+
+            color: white;
+
+            min-height: 28px;
+        }
+
+
+        .tagline {
+
+            margin-top: 8px;
+
+            color: #8090a7;
+
+            font-size: 14px;
+
+            letter-spacing: .4px;
+        }
+
+
+        /* =================================
+           GET STARTED BUTTON
+        ================================= */
+
+        .get-started {
+
+            margin-top: 25px;
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 10px;
+
+            padding: 13px 27px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    #51e6ad,
+                    #39c995
+                );
+
+            color: #07111f;
+
+            font-family: "Inter", sans-serif;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            text-decoration: none;
+
+            box-shadow:
+                0 10px 30px rgba(81,230,173,0.2);
+
+            opacity: 0;
+
+            transform: translateY(10px);
+
+            pointer-events: none;
+
+            transition:
+                opacity .5s ease,
+                transform .5s ease,
+                box-shadow .3s ease;
+        }
+
+
+        /* Button becomes visible */
+
+        .get-started.active {
+
+            opacity: 1;
+
+            transform: translateY(0);
+
+            pointer-events: auto;
+        }
+
+
+        .get-started:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 15px 35px rgba(81,230,173,0.35);
+        }
+
+
+        .get-started i {
+
+            font-size: 13px;
+
+            transition:
+                transform .3s ease;
+        }
+
+
+        .get-started:hover i {
+
+            transform: translateX(4px);
+        }
+
+
+        /* =================================
+           LOADING BAR
+        ================================= */
+
+        .loading-bar {
+
+            width: 220px;
+
+            height: 4px;
+
+            margin:
+
+                25px auto
+                12px auto;
+
+            border-radius: 50px;
+
+            background:
+                rgba(255,255,255,0.08);
+
+            overflow: hidden;
+        }
+
+
+        .loading-progress {
+
+            width: 0%;
+
+            height: 100%;
+
+            border-radius: 50px;
+
+            background:
+
+                linear-gradient(
+                    90deg,
+                    #51e6ad,
+                    #7569ff
+                );
+
+            transition:
+                width .3s ease;
+        }
+
+
+        /* =================================
+           PERCENTAGE
+        ================================= */
+
+        #percentage {
+
+            font-size: 13px;
+
+            color: #718096;
+        }
+
+
+        /* =================================
+           LOADER EXIT
+        ================================= */
+
+        #loader.hide {
+
+            opacity: 0;
+
+            visibility: hidden;
+        }
+
+
+        /* =================================
+           MAIN WEBSITE
+        ================================= */
+
+        #main-content {
+
+            height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            flex-direction: column;
+
+            background: #f5f7fb;
+
+            color: #131b2c;
+
+            opacity: 0;
+
+            transition:
+                opacity 1s ease;
+        }
+
+
+        #main-content.show {
+
+            opacity: 1;
+        }
+
+
+        #main-content h1 {
+
+            font-size: 45px;
+
+            margin-bottom: 15px;
+        }
+
+
+        #main-content span {
+
+            color: #18a870;
+        }
+
+
+        #main-content p {
+
+            color: #718096;
+
+            font-size: 17px;
+        }
+
+
+        /* =================================
+           MOBILE RESPONSIVE
+        ================================= */
+
+        @media(max-width: 600px) {
+
+            .top-nav {
+
+                padding: 20px;
+            }
+
+
+            .nav-logo {
+
+                font-size: 19px;
+            }
+
+
+            .nav-links {
+
+                gap: 3px;
+            }
+
+
+            .nav-links a {
+
+                padding: 8px 10px;
+
+                font-size: 12px;
+            }
+
+
+            .brand-name {
+
+                font-size: 32px;
+            }
+
+
+            .money-animation {
+
+                transform: scale(.88);
+            }
+
+
+            .loading-title {
+
+                font-size: 18px;
+            }
+
+
+            .tagline {
+
+                font-size: 13px;
+            }
+
+        }
+
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================================
+     SPENDWISE LOADING PAGE
+========================================== -->
+
+<div id="loader">
+
+
+    <!-- ======================================
+         TOP NAVIGATION
+    ======================================= -->
+
+    <nav class="top-nav">
+
+
+        <!-- Logo -->
+
+        <div class="nav-logo">
+
+            Spend<span>Wise</span>
+
+        </div>
+
+
+        <!-- Navigation -->
+
+        <div class="nav-links">
+
+            <a href="login.html">
+
+                Login
+
+            </a>
+
+
+            <a href="register.html"
+               class="register-btn">
+
+                Register
+
+            </a>
+
+        </div>
+
+
+    </nav>
+
+
+
+    <!-- Background Effects -->
+
+    <div class="background-blur blur-one"></div>
+
+    <div class="background-blur blur-two"></div>
+
+
+
+    <!-- Main Content -->
+
+    <div class="loader-container">
+
+
+        <!-- ==================================
+             BRAND
+        =================================== -->
+
+        <div class="brand">
+
+            <div class="brand-name">
+
+                Spend<span>Wise</span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ==================================
+             MONEY ANIMATION
+        =================================== -->
+
+        <div class="money-animation">
+
+
+            <!-- Progress Circle -->
+
+            <div
+                class="progress-ring"
+                id="progressRing">
+            </div>
+
+
+            <!-- Food -->
+
+            <div class="expense-icon food">
+
+                <i class="fa-solid fa-utensils"></i>
+
+            </div>
+
+
+            <!-- Shopping -->
+
+            <div class="expense-icon shopping">
+
+                <i class="fa-solid fa-bag-shopping"></i>
+
+            </div>
+
+
+            <!-- Transport -->
+
+            <div class="expense-icon transport">
+
+                <i class="fa-solid fa-car"></i>
+
+            </div>
+
+
+            <!-- Entertainment -->
+
+            <div class="expense-icon entertainment">
+
+                <i class="fa-solid fa-film"></i>
+
+            </div>
+
+
+            <!-- Bills -->
+
+            <div class="expense-icon bills">
+
+                <i class="fa-solid fa-receipt"></i>
+
+            </div>
+
+
+            <!-- Central ₹ -->
+
+            <div class="money-coin">
+
+                ₹
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ==================================
+             LOADING MESSAGE
+        =================================== -->
+
+        <div
+            class="loading-title"
+            id="loadingMessage">
+
+            Tracking your money...
+
+        </div>
+
+
+        <div class="tagline">
+
+            Every rupee tells a story.
+
+        </div>
+
+
+
+        <!-- ==================================
+             GET STARTED
+        =================================== -->
+
+        <a
+            href="login.html"
+            class="get-started"
+            id="getStarted">
+
+            Get Started
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </a>
+
+
+
+        <!-- ==================================
+             PROGRESS BAR
+        =================================== -->
+
+        <div class="loading-bar">
+
+            <div
+                class="loading-progress"
+                id="loadingProgress">
+            </div>
+
+        </div>
+
+
+        <div id="percentage">
+
+            0%
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+
+<!-- ==========================================
+     MAIN WEBSITE
+     Replace this with your actual homepage
+========================================== -->
+
+<div id="main-content">
+
+
+    <h1>
+
+        Welcome to Spend<span>Wise</span>
+
+    </h1>
+
+
+    <p>
+
+        Track. Understand. Grow.
+
+    </p>
+
+
+</div>
+
+
+
+
+<script>
+
+
+    /* =========================================
+       ELEMENTS
+    ========================================= */
+
+    const loader =
+        document.getElementById("loader");
+
+    const progressBar =
+        document.getElementById("loadingProgress");
+
+    const percentage =
+        document.getElementById("percentage");
+
+    const message =
+        document.getElementById("loadingMessage");
+
+    const progressRing =
+        document.getElementById("progressRing");
+
+    const getStarted =
+        document.getElementById("getStarted");
+
+    const mainContent =
+        document.getElementById("main-content");
+
+
+
+    /* =========================================
+       LOADING MESSAGES
+    ========================================= */
+
+    const messages = [
+
+        "Tracking your money...",
+
+        "Understanding your spending...",
+
+        "Organizing your expenses...",
+
+        "Preparing your financial insights...",
+
+        "Helping you spend smarter..."
+
+    ];
+
+
+
+    let progress = 0;
+
+
+
+    /* =========================================
+       UPDATE MESSAGE
+    ========================================= */
+
+    function updateMessage() {
+
+
+        if (progress < 20) {
+
+            message.innerText =
+                messages[0];
+
+        }
+
+        else if (progress < 40) {
+
+            message.innerText =
+                messages[1];
+
+        }
+
+        else if (progress < 60) {
+
+            message.innerText =
+                messages[2];
+
+        }
+
+        else if (progress < 80) {
+
+            message.innerText =
+                messages[3];
+
+        }
+
+        else {
+
+            message.innerText =
+                messages[4];
+
+        }
+
+    }
+
+
+
+    /* =========================================
+       LOADING ANIMATION
+    ========================================= */
+
+    const loadingInterval =
+        setInterval(() => {
+
+
+            progress +=
+                Math.floor(
+                    Math.random() * 4
+                ) + 1;
+
+
+            if (progress >= 100) {
+
+                progress = 100;
+
+            }
+
+
+            /* Percentage */
+
+            percentage.innerText =
+                progress + "%";
+
+
+            /* Progress bar */
+
+            progressBar.style.width =
+                progress + "%";
+
+
+            /* Circular progress */
+
+            const degree =
+                progress * 3.6;
+
+
+            progressRing.style.background =
+
+                `conic-gradient(
+
+                    #51e6ad 0deg,
+
+                    #7569ff ${degree}deg,
+
+                    rgba(255,255,255,0.08)
+                    ${degree}deg
+
+                )`;
+
+
+            /* Message */
+
+            updateMessage();
+
+
+
+            /* =================================
+               LOADING FINISHED
+            ================================= */
+
+            if (progress >= 100) {
+
+
+                clearInterval(
+                    loadingInterval
+                );
+
+
+                message.innerText =
+                    "You're all set!";
+
+
+                percentage.innerText =
+                    "Ready to manage your money";
+
+
+                /*
+                    Show Get Started button
+                */
+
+                setTimeout(() => {
+
+                    getStarted.classList.add(
+                        "active"
+                    );
+
+                }, 300);
+
+
+            }
+
+
+        }, 80);
+
+
+</script>
+
+
+</body>
+
+</html>
+```

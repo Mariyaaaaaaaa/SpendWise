@@ -1,0 +1,3582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings | SpendWise</title>
+
+    <!-- Google Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+
+            --bg: #07111f;
+            --card: rgba(16, 29, 48, 0.72);
+            --card-hover: rgba(22, 38, 61, 0.88);
+
+            --border: rgba(255,255,255,0.08);
+
+            --mint: #51e6ad;
+            --purple: #7569ff;
+
+            --white: #ffffff;
+            --text: #eef3f8;
+            --muted: #8795a8;
+
+            --danger: #ff6b81;
+            --warning: #ffc857;
+        }
+
+        body {
+
+            font-family: "Inter", sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 85% 5%,
+                    rgba(117,105,255,0.11),
+                    transparent 27%
+                ),
+                radial-gradient(
+                    circle at 15% 80%,
+                    rgba(81,230,173,0.06),
+                    transparent 25%
+                ),
+                var(--bg);
+
+            color: var(--text);
+
+            min-height: 100vh;
+
+        }
+
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+
+            width: 250px;
+            height: 100vh;
+
+            position: fixed;
+
+            left: 0;
+            top: 0;
+
+            padding: 28px 18px;
+
+            background: rgba(7,17,31,0.95);
+
+            border-right: 1px solid var(--border);
+
+            backdrop-filter: blur(20px);
+
+            z-index: 1000;
+
+        }
+
+
+        .logo {
+
+            padding: 0 14px;
+
+            margin-bottom: 42px;
+
+            font-size: 24px;
+
+            font-weight: 800;
+
+            letter-spacing: -1px;
+
+        }
+
+
+        .logo span {
+
+            color: var(--mint);
+
+        }
+
+
+        .nav-section {
+
+            margin-bottom: 28px;
+
+        }
+
+
+        .nav-title {
+
+            padding: 0 14px;
+
+            margin-bottom: 10px;
+
+            color: #536276;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.5px;
+
+        }
+
+
+        .nav-link {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            padding: 12px 14px;
+
+            margin-bottom: 5px;
+
+            border-radius: 12px;
+
+            color: var(--muted);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 500;
+
+            transition: 0.25s;
+
+        }
+
+
+        .nav-link i {
+
+            width: 18px;
+
+            text-align: center;
+
+        }
+
+
+        .nav-link:hover {
+
+            color: var(--white);
+
+            background: rgba(255,255,255,0.05);
+
+        }
+
+
+        .nav-link.active {
+
+            color: var(--mint);
+
+            background: rgba(81,230,173,0.10);
+
+        }
+
+
+        .nav-link.active i {
+
+            color: var(--mint);
+
+        }
+
+
+        .logout {
+
+            position: absolute;
+
+            bottom: 25px;
+
+            left: 18px;
+
+            right: 18px;
+
+        }
+
+
+        .logout .nav-link:hover {
+
+            color: var(--danger);
+
+            background: rgba(255,107,129,0.08);
+
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+
+            margin-left: 250px;
+
+            padding: 28px 38px 60px;
+
+            min-height: 100vh;
+
+        }
+
+
+        /* =========================
+           TOPBAR
+        ========================= */
+
+        .topbar {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 32px;
+
+        }
+
+
+        .page-title {
+
+            display: flex;
+
+            align-items: center;
+
+        }
+
+
+        .page-title h1 {
+
+            font-size: 26px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.8px;
+
+        }
+
+
+        .page-title p {
+
+            margin-top: 5px;
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+        }
+
+
+        .top-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+        }
+
+
+        .icon-btn {
+
+            width: 40px;
+
+            height: 40px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+
+            background: var(--card);
+
+            color: var(--muted);
+
+            cursor: pointer;
+
+        }
+
+
+        .icon-btn:hover {
+
+            color: var(--mint);
+
+        }
+
+
+        .profile-mini {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+        }
+
+
+        .avatar-mini {
+
+            width: 40px;
+
+            height: 40px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--mint),
+                    var(--purple)
+                );
+
+            color: #07111f;
+
+            font-weight: 800;
+
+        }
+
+
+        .profile-mini span {
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+        }
+
+
+        /* =========================
+           SETTINGS LAYOUT
+        ========================= */
+
+        .settings-layout {
+
+            display: grid;
+
+            grid-template-columns: 210px 1fr;
+
+            gap: 22px;
+
+            max-width: 1050px;
+
+        }
+
+
+        /* =========================
+           SETTINGS NAV
+        ========================= */
+
+        .settings-nav {
+
+            height: fit-content;
+
+            padding: 10px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 17px;
+
+            background: var(--card);
+
+            backdrop-filter: blur(18px);
+
+            position: sticky;
+
+            top: 25px;
+
+        }
+
+
+        .settings-nav button {
+
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            padding: 12px;
+
+            margin-bottom: 4px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: transparent;
+
+            color: var(--muted);
+
+            font-family: inherit;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+        }
+
+
+        .settings-nav button:last-child {
+
+            margin-bottom: 0;
+
+        }
+
+
+        .settings-nav button:hover {
+
+            color: var(--white);
+
+            background: rgba(255,255,255,0.04);
+
+        }
+
+
+        .settings-nav button.active {
+
+            color: var(--mint);
+
+            background: rgba(81,230,173,0.09);
+
+        }
+
+
+        .settings-nav button i {
+
+            width: 17px;
+
+            text-align: center;
+
+        }
+
+
+        /* =========================
+           SETTINGS CONTENT
+        ========================= */
+
+        .settings-content {
+
+            min-width: 0;
+
+        }
+
+
+        .settings-section {
+
+            display: none;
+
+        }
+
+
+        .settings-section.active {
+
+            display: block;
+
+        }
+
+
+        .settings-card {
+
+            margin-bottom: 18px;
+
+            padding: 23px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            background: var(--card);
+
+            backdrop-filter: blur(18px);
+
+        }
+
+
+        .settings-card:last-child {
+
+            margin-bottom: 0;
+
+        }
+
+
+        .section-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .section-header h2 {
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+        }
+
+
+        .section-header p {
+
+            margin-top: 5px;
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            line-height: 1.5;
+
+        }
+
+
+        .section-icon {
+
+            width: 37px;
+
+            height: 37px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 11px;
+
+            color: var(--mint);
+
+            background: rgba(81,230,173,0.08);
+
+        }
+
+
+        /* =========================
+           SETTING ROW
+        ========================= */
+
+        .setting-row {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 16px 0;
+
+            border-bottom: 1px solid rgba(255,255,255,0.055);
+
+        }
+
+
+        .setting-row:first-child {
+
+            padding-top: 0;
+
+        }
+
+
+        .setting-row:last-child {
+
+            border-bottom: none;
+
+            padding-bottom: 0;
+
+        }
+
+
+        .setting-info {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+
+        .setting-icon {
+
+            width: 36px;
+
+            height: 36px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: rgba(255,255,255,0.035);
+
+            color: var(--muted);
+
+        }
+
+
+        .setting-text strong {
+
+            display: block;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+        }
+
+
+        .setting-text span {
+
+            display: block;
+
+            margin-top: 4px;
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            line-height: 1.4;
+
+        }
+
+
+        /* =========================
+           TOGGLE
+        ========================= */
+
+        .switch {
+
+            position: relative;
+
+            width: 43px;
+
+            height: 24px;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .switch input {
+
+            opacity: 0;
+
+            width: 0;
+
+            height: 0;
+
+        }
+
+
+        .slider {
+
+            position: absolute;
+
+            inset: 0;
+
+            border-radius: 30px;
+
+            background: rgba(255,255,255,0.10);
+
+            cursor: pointer;
+
+            transition: 0.25s;
+
+        }
+
+
+        .slider::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 18px;
+
+            height: 18px;
+
+            left: 3px;
+
+            top: 3px;
+
+            border-radius: 50%;
+
+            background: #9aa6b5;
+
+            transition: 0.25s;
+
+        }
+
+
+        .switch input:checked + .slider {
+
+            background: rgba(81,230,173,0.35);
+
+        }
+
+
+        .switch input:checked + .slider::before {
+
+            transform: translateX(19px);
+
+            background: var(--mint);
+
+        }
+
+
+        /* =========================
+           SELECT
+        ========================= */
+
+        .select {
+
+            min-width: 155px;
+
+            height: 39px;
+
+            padding: 0 12px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 9px;
+
+            outline: none;
+
+            background: rgba(255,255,255,0.035);
+
+            color: var(--white);
+
+            font-family: inherit;
+
+            font-size: 11px;
+
+            cursor: pointer;
+
+        }
+
+
+        .select:focus {
+
+            border-color: rgba(81,230,173,0.4);
+
+        }
+
+
+        .select option {
+
+            background: #0c192b;
+
+            color: white;
+
+        }
+
+
+        /* =========================
+           THEME OPTIONS
+        ========================= */
+
+        .theme-options {
+
+            display: flex;
+
+            gap: 9px;
+
+        }
+
+
+        .theme-option {
+
+            padding: 8px 12px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 9px;
+
+            background: rgba(255,255,255,0.03);
+
+            color: var(--muted);
+
+            font-family: inherit;
+
+            font-size: 10px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+        }
+
+
+        .theme-option.active {
+
+            border-color: rgba(81,230,173,0.4);
+
+            background: rgba(81,230,173,0.08);
+
+            color: var(--mint);
+
+        }
+
+
+        /* =========================
+           SECURITY BUTTONS
+        ========================= */
+
+        .outline-btn {
+
+            padding: 9px 13px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 9px;
+
+            background: rgba(255,255,255,0.03);
+
+            color: var(--muted);
+
+            font-family: inherit;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+        }
+
+
+        .outline-btn:hover {
+
+            color: var(--white);
+
+            border-color: rgba(255,255,255,0.15);
+
+        }
+
+
+        .danger-btn {
+
+            padding: 9px 13px;
+
+            border: 1px solid rgba(255,107,129,0.2);
+
+            border-radius: 9px;
+
+            background: rgba(255,107,129,0.06);
+
+            color: var(--danger);
+
+            font-family: inherit;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+        }
+
+
+        .danger-btn:hover {
+
+            background: rgba(255,107,129,0.12);
+
+        }
+
+
+        /* =========================
+           DATA BOX
+        ========================= */
+
+        .data-box {
+
+            display: grid;
+
+            grid-template-columns: repeat(2,1fr);
+
+            gap: 12px;
+
+        }
+
+
+        .data-item {
+
+            padding: 17px;
+
+            border: 1px solid rgba(255,255,255,0.06);
+
+            border-radius: 12px;
+
+            background: rgba(255,255,255,0.025);
+
+        }
+
+
+        .data-item i {
+
+            margin-bottom: 9px;
+
+            color: var(--mint);
+
+        }
+
+
+        .data-item strong {
+
+            display: block;
+
+            margin-bottom: 4px;
+
+            font-size: 12px;
+
+        }
+
+
+        .data-item span {
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            line-height: 1.5;
+
+        }
+
+
+        .data-actions {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 17px;
+
+        }
+
+
+        /* =========================
+           DANGER ZONE
+        ========================= */
+
+        .danger-card {
+
+            border-color: rgba(255,107,129,0.13);
+
+        }
+
+
+        .danger-card .section-icon {
+
+            color: var(--danger);
+
+            background: rgba(255,107,129,0.08);
+
+        }
+
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal-overlay {
+
+            position: fixed;
+
+            inset: 0;
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            background: rgba(0,0,0,0.68);
+
+            backdrop-filter: blur(8px);
+
+            z-index: 2000;
+
+        }
+
+
+        .modal-overlay.show {
+
+            display: flex;
+
+        }
+
+
+        .modal {
+
+            width: 100%;
+
+            max-width: 420px;
+
+            padding: 27px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            background: #0c192b;
+
+            box-shadow: 0 25px 70px rgba(0,0,0,0.45);
+
+            animation: modalIn 0.25s ease;
+
+        }
+
+
+        @keyframes modalIn {
+
+            from {
+
+                opacity: 0;
+
+                transform: translateY(15px) scale(0.98);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform: translateY(0) scale(1);
+
+            }
+
+        }
+
+
+        .modal-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .modal-header h2 {
+
+            font-size: 18px;
+
+        }
+
+
+        .close-btn {
+
+            width: 34px;
+
+            height: 34px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: rgba(255,255,255,0.05);
+
+            color: var(--muted);
+
+            cursor: pointer;
+
+        }
+
+
+        .close-btn:hover {
+
+            color: var(--white);
+
+        }
+
+
+        .modal p {
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            line-height: 1.6;
+
+        }
+
+
+        .modal-actions {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 22px;
+
+        }
+
+
+        .modal-btn {
+
+            flex: 1;
+
+            height: 42px;
+
+            border-radius: 10px;
+
+            font-family: inherit;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+        }
+
+
+        .cancel-btn {
+
+            border: 1px solid var(--border);
+
+            background: transparent;
+
+            color: var(--muted);
+
+        }
+
+
+        .confirm-btn {
+
+            border: none;
+
+            background: var(--mint);
+
+            color: #07111f;
+
+        }
+
+
+        .delete-confirm {
+
+            background: var(--danger);
+
+            color: white;
+
+        }
+
+
+        /* =========================
+           TOAST
+        ========================= */
+
+        .toast {
+
+            position: fixed;
+
+            right: 25px;
+
+            bottom: 25px;
+
+            padding: 13px 17px;
+
+            border: 1px solid rgba(81,230,173,0.18);
+
+            border-radius: 12px;
+
+            background: #112238;
+
+            color: var(--white);
+
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+
+            font-size: 12px;
+
+            transform: translateY(100px);
+
+            opacity: 0;
+
+            transition: 0.3s;
+
+            z-index: 3000;
+
+        }
+
+
+        .toast.show {
+
+            transform: translateY(0);
+
+            opacity: 1;
+
+        }
+
+
+        .toast i {
+
+            margin-right: 7px;
+
+            color: var(--mint);
+
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        .mobile-menu {
+
+            display: none;
+
+            width: 40px;
+
+            height: 40px;
+
+            margin-right: 12px;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border: 1px solid var(--border);
+
+            border-radius: 10px;
+
+            background: var(--card);
+
+            color: var(--white);
+
+            cursor: pointer;
+
+        }
+
+
+        @media (max-width: 900px) {
+
+            .settings-layout {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .settings-nav {
+
+                position: static;
+
+                display: flex;
+
+                overflow-x: auto;
+
+                gap: 4px;
+
+            }
+
+
+            .settings-nav button {
+
+                flex-shrink: 0;
+
+                width: auto;
+
+                margin: 0;
+
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+
+                transform: translateX(-100%);
+
+                transition: 0.3s;
+
+            }
+
+
+            .sidebar.open {
+
+                transform: translateX(0);
+
+            }
+
+
+            .main {
+
+                margin-left: 0;
+
+                padding: 20px;
+
+            }
+
+
+            .mobile-menu {
+
+                display: flex;
+
+            }
+
+
+            .profile-mini span {
+
+                display: none;
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .setting-row {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+
+            }
+
+
+            .setting-row > .switch,
+
+            .setting-row > .select,
+
+            .setting-row > .theme-options,
+
+            .setting-row > button {
+
+                align-self: flex-end;
+
+            }
+
+
+            .data-box {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .icon-btn {
+
+                display: none;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+        Spend<span>Wise</span>
+    </div>
+
+
+    <div class="nav-section">
+
+        <div class="nav-title">
+            Main Menu
+        </div>
+
+
+        <a href="dashboard.html" class="nav-link">
+
+            <i class="fa-solid fa-grid-2"></i>
+
+            Dashboard
+
+        </a>
+
+
+        <a href="transactions.html" class="nav-link">
+
+            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+
+            Transactions
+
+        </a>
+
+
+        <a href="analytics.html" class="nav-link">
+
+            <i class="fa-solid fa-chart-pie"></i>
+
+            Analytics
+
+        </a>
+
+
+        <a href="budget.html" class="nav-link">
+
+            <i class="fa-solid fa-wallet"></i>
+
+            Budgets
+
+        </a>
+
+
+        <a href="goals.html" class="nav-link">
+
+            <i class="fa-solid fa-bullseye"></i>
+
+            Goals
+
+        </a>
+
+    </div>
+
+
+    <div class="nav-section">
+
+        <div class="nav-title">
+            Account
+        </div>
+
+
+        <a href="profile.html" class="nav-link">
+
+            <i class="fa-solid fa-user"></i>
+
+            Profile
+
+        </a>
+
+
+        <a href="settings.html" class="nav-link active">
+
+            <i class="fa-solid fa-gear"></i>
+
+            Settings
+
+        </a>
+
+    </div>
+
+
+    <div class="logout">
+
+        <a href="index.html" class="nav-link">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Logout
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="main">
+
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <div class="page-title">
+
+            <button
+                class="mobile-menu"
+                onclick="toggleSidebar()">
+
+                <i class="fa-solid fa-bars"></i>
+
+            </button>
+
+
+            <div>
+
+                <h1>Settings</h1>
+
+                <p>
+                    Customize your SpendWise experience.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="top-actions">
+
+            <button class="icon-btn">
+
+                <i class="fa-regular fa-bell"></i>
+
+            </button>
+
+
+            <div class="profile-mini">
+
+                <div
+                    class="avatar-mini"
+                    id="miniAvatar">
+
+                    M
+
+                </div>
+
+                <span id="miniName">
+                    Mariya
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         SETTINGS LAYOUT
+    ========================= -->
+
+    <div class="settings-layout">
+
+
+        <!-- SETTINGS NAV -->
+
+        <div class="settings-nav">
+
+            <button
+                class="active"
+                data-section="general">
+
+                <i class="fa-solid fa-sliders"></i>
+
+                General
+
+            </button>
+
+
+            <button
+                data-section="notifications">
+
+                <i class="fa-regular fa-bell"></i>
+
+                Notifications
+
+            </button>
+
+
+            <button
+                data-section="privacy">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                Privacy
+
+            </button>
+
+
+            <button
+                data-section="data">
+
+                <i class="fa-solid fa-database"></i>
+
+                Data
+
+            </button>
+
+
+            <button
+                data-section="security">
+
+                <i class="fa-solid fa-lock"></i>
+
+                Security
+
+            </button>
+
+        </div>
+
+
+        <!-- =========================
+             SETTINGS CONTENT
+        ========================= -->
+
+        <div class="settings-content">
+
+
+            <!-- =========================
+                 GENERAL
+            ========================= -->
+
+            <section
+                class="settings-section active"
+                id="general">
+
+
+                <div class="settings-card">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>
+                                General Preferences
+                            </h2>
+
+                            <p>
+                                Configure how SpendWise looks and displays your information.
+                            </p>
+
+                        </div>
+
+
+                        <div class="section-icon">
+
+                            <i class="fa-solid fa-sliders"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Currency -->
+
+                    <div class="setting-row">
+
+                        <div class="setting-info">
+
+                            <div class="setting-icon">
+
+                                <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                            </div>
+
+
+                            <div class="setting-text">
+
+                                <strong>
+                                    Currency
+                                </strong>
+
+                                <span>
+                                    Choose the currency used throughout SpendWise.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <select
+                            class="select"
+                            id="currencySelect">
+
+                            <option value="INR">
+                                ₹ Indian Rupee
+                            </option>
+
+                            <option value="USD">
+                                $ US Dollar
+                            </option>
+
+                            <option value="EUR">
+                                € Euro
+                            </option>
+
+                            <option value="GBP">
+                                £ British Pound
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Theme -->
+
+                    <div class="setting-row">
+
+                        <div class="setting-info">
+
+                            <div class="setting-icon">
+
+                                <i class="fa-solid fa-palette"></i>
+
+                            </div>
+
+
+                            <div class="setting-text">
+
+                                <strong>
+                                    Appearance
+                                </strong>
+
+                                <span>
+                                    Select your preferred interface appearance.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="theme-options">
+
+                            <button
+                                class="theme-option active"
+                                data-theme="dark">
+
+                                <i class="fa-solid fa-moon"></i>
+
+                                Dark
+
+                            </button>
+
+
+                            <button
+                                class="theme-option"
+                                data-theme="light">
+
+                                <i class="fa-solid fa-sun"></i>
+
+                                Light
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Compact mode -->
+
+                    <div class="setting-row">
+
+                        <div class="setting-info">
+
+                            <div class="setting-icon">
+
+                                <i class="fa-solid fa-compress"></i>
+
+                            </div>
+
+
+                            <div class="setting-text">
+
+                                <strong>
+                                    Compact Layout
+                                </strong>
+
+                                <span>
+                                    Reduce spacing between cards and sections.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="compactToggle">
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- Confirm actions -->
+
+                    <div class="setting-row">
+
+                        <div class="setting-info">
+
+                            <div class="setting-icon">
+
+                                <i class="fa-solid fa-circle-question"></i>
+
+                            </div>
+
+
+                            <div class="setting-text">
+
+                                <strong>
+                                    Confirm Before Deleting
+                                </strong>
+
+                                <span>
+                                    Ask for confirmation before deleting transactions or goals.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="confirmDeleteToggle"
+                                checked>
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STARTUP -->
+
+                <div class="settings-card">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>
+                                Startup
+                            </h2>
+
+                            <p>
+                                Choose where SpendWise should take you after opening.
+                            </p>
+
+                        </div>
+
+                        <div class="section-icon">
+
+                            <i class="fa-solid fa-house"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-info">
+
+                            <div class="setting-icon">
+
+                                <i class="fa-solid fa-arrow-right"></i>
+
+                            </div>
+
+
+                            <div class="setting-text">
+
+                                <strong>
+                                    Default Page
+                                </strong>
+
+                                <span>
+                                    The page shown when you enter your account.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <select
+                            class="select"
+                            id="defaultPage">
+
+                            <option value="dashboard.html">
+                                Dashboard
+                            </option>
+
+                            <option value="transactions.html">
+                                Transactions
+                            </option>
+
+                            <option value="analytics.html">
+                                Analytics
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 NOTIFICATIONS
+            ========================= -->
+
+            <section
+                class="settings-section"
+                id="notifications">
+
+
+                <div class="settings-card">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>
+                                Notifications
+                            </h2>
+
+                            <p>
+                                Decide which reminders and updates you want to receive.
+                            </p>
+
+                        </div>
+
+
+                        <div class="section-icon">
+
+                            <i class="fa-regular fa-bell"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-info">
+
+                            <div class="setting-icon">
+
+                                <i class="fa-solid fa-bell"></i>
+
+                            </div>
+
+
+                            <div class="setting-text">
+
+                                <strong>
+                                    Notifications
+                                </strong>
+
+                                <span>
+                                    Enable SpendWise notifications.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="notificationsToggle"
+                                checked>
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-info">
+
+                            <div class="setting-icon">
+
+                                <i class="fa-solid fa-wallet"></i>
+
+                            </div>
+
+
+                            <div class="setting-text">
+
+                                <strong>
+                                    Budget Alerts
+                                </strong>
+
+                                <span>
+                                    Notify when spending approaches a budget limit.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="budgetAlertsToggle"
+                                checked>
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-info">
+
+                            <div class="setting-icon">
+
+                                <i class="fa-solid fa-bullseye"></i>
+
+                            </div>
+
+
+                            <div class="setting-text">
+
+                                <strong>
+                                    Goal Reminders
+                                </strong>
+
+                                <span>
+                                    Receive reminders about your savings goals.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="goalAlertsToggle"
+                                checked>
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-info">
+
+                            <div class="setting-icon">
+
+                                <i class="fa-solid fa-lightbulb"></i>
+
+                            </div>
+
+
+                            <div class="setting-text">
+
+                                <strong>
+                                    Money Tips
+                                </strong>
+
+                                <span>
+                                    Show personalized spending and saving tips.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="tipsToggle"
+                                checked>
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 PRIVACY
+            ========================= -->
+
+            <section
+                class="settings-section"
+                id="privacy">
+
+
+                <div class="settings-card">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>
+                                Privacy
+                            </h2>
+
+                            <p>
+                                Control how your financial information is handled.
+                            </p>
+
+                        </div>
+
+
+                        <div class="section-icon">
+
+                            <i class="fa-solid fa-shield-halved"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-info">
+
+                            <div class="setting-icon">
+
+                                <i class="fa-solid fa-chart-line"></i>
+
+                            </div>
+
+
+                            <div class="setting-text">
+
+                                <strong>
+                                    Personalized Insights
+                                </strong>
+
+                                <span>
+                                    Allow SpendWise to analyze your spending patterns to generate insights.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="insightsToggle"
+                                checked>
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-info">
+
+                            <div class="setting-icon">
+
+                                <i class="fa-solid fa-eye"></i>
+
+                            </div>
+
+
+                            <div class="setting-text">
+
+                                <strong>
+                                    Show Balance on Dashboard
+                                </strong>
+
+                                <span>
+                                    Display your available balance on the dashboard.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="balanceVisibilityToggle"
+                                checked>
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-info">
+
+                            <div class="setting-icon">
+
+                                <i class="fa-solid fa-receipt"></i>
+
+                            </div>
+
+
+                            <div class="setting-text">
+
+                                <strong>
+                                    Receipt Data
+                                </strong>
+
+                                <span>
+                                    Allow receipt information to be stored with transactions.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="receiptToggle"
+                                checked>
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 DATA
+            ========================= -->
+
+            <section
+                class="settings-section"
+                id="data">
+
+
+                <div class="settings-card">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>
+                                Data Management
+                            </h2>
+
+                            <p>
+                                Manage the financial data stored in this browser.
+                            </p>
+
+                        </div>
+
+
+                        <div class="section-icon">
+
+                            <i class="fa-solid fa-database"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="data-box">
+
+
+                        <div class="data-item">
+
+                            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+
+                            <strong>
+                                Transactions
+                            </strong>
+
+                            <span id="transactionCount">
+                                0 records stored
+                            </span>
+
+                        </div>
+
+
+                        <div class="data-item">
+
+                            <i class="fa-solid fa-wallet"></i>
+
+                            <strong>
+                                Budgets
+                            </strong>
+
+                            <span id="budgetCount">
+                                0 budgets stored
+                            </span>
+
+                        </div>
+
+
+                        <div class="data-item">
+
+                            <i class="fa-solid fa-bullseye"></i>
+
+                            <strong>
+                                Goals
+                            </strong>
+
+                            <span id="goalCount">
+                                0 goals stored
+                            </span>
+
+                        </div>
+
+
+                        <div class="data-item">
+
+                            <i class="fa-solid fa-user"></i>
+
+                            <strong>
+                                Profile
+                            </strong>
+
+                            <span>
+                                Personal profile information
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="data-actions">
+
+                        <button
+                            class="outline-btn"
+                            onclick="exportData()">
+
+                            <i class="fa-solid fa-download"></i>
+
+                            Export Data
+
+                        </button>
+
+
+                        <button
+                            class="outline-btn"
+                            onclick="clearTemporaryData()">
+
+                            <i class="fa-solid fa-broom"></i>
+
+                            Clear Settings
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DANGER ZONE -->
+
+                <div class="settings-card danger-card">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>
+                                Danger Zone
+                            </h2>
+
+                            <p>
+                                These actions permanently affect your locally stored SpendWise data.
+                            </p>
+
+                        </div>
+
+
+                        <div class="section-icon">
+
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-info">
+
+                            <div class="setting-icon">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                            </div>
+
+
+                            <div class="setting-text">
+
+                                <strong>
+                                    Delete All Financial Data
+                                </strong>
+
+                                <span>
+                                    Permanently remove expenses, budgets and savings goals.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            class="danger-btn"
+                            onclick="openDeleteModal()">
+
+                            Delete Data
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 SECURITY
+            ========================= -->
+
+            <section
+                class="settings-section"
+                id="security">
+
+
+                <div class="settings-card">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>
+                                Security
+                            </h2>
+
+                            <p>
+                                Keep your SpendWise account and local data protected.
+                            </p>
+
+                        </div>
+
+
+                        <div class="section-icon">
+
+                            <i class="fa-solid fa-lock"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-info">
+
+                            <div class="setting-icon">
+
+                                <i class="fa-solid fa-key"></i>
+
+                            </div>
+
+
+                            <div class="setting-text">
+
+                                <strong>
+                                    Change Password
+                                </strong>
+
+                                <span>
+                                    Update your account password.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            class="outline-btn"
+                            onclick="showDemoMessage()">
+
+                            Change Password
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-info">
+
+                            <div class="setting-icon">
+
+                                <i class="fa-solid fa-shield"></i>
+
+                            </div>
+
+
+                            <div class="setting-text">
+
+                                <strong>
+                                    Two-Factor Authentication
+                                </strong>
+
+                                <span>
+                                    Add another layer of security to your account.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="twoFactorToggle">
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div class="setting-info">
+
+                            <div class="setting-icon">
+
+                                <i class="fa-solid fa-right-from-bracket"></i>
+
+                            </div>
+
+
+                            <div class="setting-text">
+
+                                <strong>
+                                    Sign Out
+                                </strong>
+
+                                <span>
+                                    Return to the SpendWise home page.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            class="outline-btn"
+                            onclick="logout()">
+
+                            Sign Out
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- =========================
+     DELETE MODAL
+========================= -->
+
+<div
+    class="modal-overlay"
+    id="deleteModal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h2>
+                Delete Financial Data?
+            </h2>
+
+
+            <button
+                class="close-btn"
+                onclick="closeDeleteModal()">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <p>
+
+            This will permanently remove all saved
+            expenses, budgets and savings goals from
+            this browser.
+
+            <br><br>
+
+            Your profile and settings will remain.
+
+            <br><br>
+
+            <strong style="color:var(--danger);">
+                This action cannot be undone.
+            </strong>
+
+        </p>
+
+
+        <div class="modal-actions">
+
+            <button
+                class="modal-btn cancel-btn"
+                onclick="closeDeleteModal()">
+
+                Cancel
+
+            </button>
+
+
+            <button
+                class="modal-btn confirm-btn delete-confirm"
+                onclick="deleteAllData()">
+
+                Delete Everything
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div
+    class="toast"
+    id="toast">
+
+    <i class="fa-solid fa-circle-check"></i>
+
+    <span id="toastMessage">
+        Settings saved.
+    </span>
+
+</div>
+
+
+<script>
+
+    /* =========================
+       STORAGE
+    ========================= */
+
+    const SETTINGS_KEY =
+        "spendwiseSettings";
+
+
+    const defaultSettings = {
+
+        currency: "INR",
+
+        theme: "dark",
+
+        compact: false,
+
+        confirmDelete: true,
+
+        defaultPage: "dashboard.html",
+
+        notifications: true,
+
+        budgetAlerts: true,
+
+        goalAlerts: true,
+
+        tips: true,
+
+        insights: true,
+
+        balanceVisibility: true,
+
+        receiptStorage: true,
+
+        twoFactor: false
+
+    };
+
+
+    let settings =
+        JSON.parse(
+            localStorage.getItem(
+                SETTINGS_KEY
+            )
+        ) || {
+            ...defaultSettings
+        };
+
+
+    /* =========================
+       SAVE SETTINGS
+    ========================= */
+
+    function saveSettings() {
+
+        localStorage.setItem(
+            SETTINGS_KEY,
+            JSON.stringify(settings)
+        );
+
+    }
+
+
+    /* =========================
+       SETTINGS NAVIGATION
+    ========================= */
+
+    document
+        .querySelectorAll(".settings-nav button")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    const section =
+                        this.dataset.section;
+
+
+                    document
+                        .querySelectorAll(
+                            ".settings-nav button"
+                        )
+                        .forEach(btn => {
+
+                            btn.classList.remove(
+                                "active"
+                            );
+
+                        });
+
+
+                    document
+                        .querySelectorAll(
+                            ".settings-section"
+                        )
+                        .forEach(sec => {
+
+                            sec.classList.remove(
+                                "active"
+                            );
+
+                        });
+
+
+                    this.classList.add(
+                        "active"
+                    );
+
+
+                    document
+                        .getElementById(section)
+                        .classList.add(
+                            "active"
+                        );
+
+                }
+            );
+
+        });
+
+
+    /* =========================
+       CURRENCY
+    ========================= */
+
+    const currencySelect =
+        document.getElementById(
+            "currencySelect"
+        );
+
+
+    currencySelect.value =
+        settings.currency;
+
+
+    currencySelect.addEventListener(
+        "change",
+        function() {
+
+            settings.currency =
+                this.value;
+
+            saveSettings();
+
+            showToast(
+                "Currency preference saved."
+            );
+
+        }
+    );
+
+
+    /* =========================
+       THEME
+    ========================= */
+
+    const themeButtons =
+        document.querySelectorAll(
+            ".theme-option"
+        );
+
+
+    function updateThemeButtons() {
+
+        themeButtons.forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.theme ===
+                settings.theme
+            );
+
+        });
+
+    }
+
+
+    themeButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+                settings.theme =
+                    this.dataset.theme;
+
+                saveSettings();
+
+                updateThemeButtons();
+
+
+                if (
+                    settings.theme === "light"
+                ) {
+
+                    showToast(
+                        "Light mode selected. Full theme support can be added later."
+                    );
+
+                } else {
+
+                    showToast(
+                        "Dark mode selected."
+                    );
+
+                }
+
+            }
+        );
+
+    });
+
+
+    updateThemeButtons();
+
+
+    /* =========================
+       TOGGLE HELPER
+    ========================= */
+
+    function connectToggle(
+        id,
+        property
+    ) {
+
+        const element =
+            document.getElementById(id);
+
+
+        element.checked =
+            settings[property];
+
+
+        element.addEventListener(
+            "change",
+            function() {
+
+                settings[property] =
+                    this.checked;
+
+                saveSettings();
+
+                showToast(
+                    "Setting updated."
+                );
+
+            }
+        );
+
+    }
+
+
+    connectToggle(
+        "compactToggle",
+        "compact"
+    );
+
+
+    connectToggle(
+        "confirmDeleteToggle",
+        "confirmDelete"
+    );
+
+
+    connectToggle(
+        "notificationsToggle",
+        "notifications"
+    );
+
+
+    connectToggle(
+        "budgetAlertsToggle",
+        "budgetAlerts"
+    );
+
+
+    connectToggle(
+        "goalAlertsToggle",
+        "goalAlerts"
+    );
+
+
+    connectToggle(
+        "tipsToggle",
+        "tips"
+    );
+
+
+    connectToggle(
+        "insightsToggle",
+        "insights"
+    );
+
+
+    connectToggle(
+        "balanceVisibilityToggle",
+        "balanceVisibility"
+    );
+
+
+    connectToggle(
+        "receiptToggle",
+        "receiptStorage"
+    );
+
+
+    connectToggle(
+        "twoFactorToggle",
+        "twoFactor"
+    );
+
+
+    /* =========================
+       DEFAULT PAGE
+    ========================= */
+
+    const defaultPage =
+        document.getElementById(
+            "defaultPage"
+        );
+
+
+    defaultPage.value =
+        settings.defaultPage;
+
+
+    defaultPage.addEventListener(
+        "change",
+        function() {
+
+            settings.defaultPage =
+                this.value;
+
+            saveSettings();
+
+            showToast(
+                "Startup page updated."
+            );
+
+        }
+    );
+
+
+    /* =========================
+       DATA COUNTS
+    ========================= */
+
+    function updateDataCounts() {
+
+        const expenses =
+            JSON.parse(
+                localStorage.getItem(
+                    "spendwiseExpenses"
+                )
+            ) || [];
+
+
+        const budgets =
+            JSON.parse(
+                localStorage.getItem(
+                    "spendwiseBudgets"
+                )
+            ) || [];
+
+
+        const goals =
+            JSON.parse(
+                localStorage.getItem(
+                    "spendwiseGoals"
+                )
+            ) || [];
+
+
+        document.getElementById(
+            "transactionCount"
+        ).textContent =
+            `${expenses.length} ${
+                expenses.length === 1
+                    ? "record"
+                    : "records"
+            } stored`;
+
+
+        document.getElementById(
+            "budgetCount"
+        ).textContent =
+            `${budgets.length} ${
+                budgets.length === 1
+                    ? "budget"
+                    : "budgets"
+            } stored`;
+
+
+        document.getElementById(
+            "goalCount"
+        ).textContent =
+            `${goals.length} ${
+                goals.length === 1
+                    ? "goal"
+                    : "goals"
+            } stored`;
+
+    }
+
+
+    updateDataCounts();
+
+
+    /* =========================
+       EXPORT DATA
+    ========================= */
+
+    function exportData() {
+
+        const data = {
+
+            profile:
+                JSON.parse(
+                    localStorage.getItem(
+                        "spendwiseProfile"
+                    )
+                ) || null,
+
+            expenses:
+                JSON.parse(
+                    localStorage.getItem(
+                        "spendwiseExpenses"
+                    )
+                ) || [],
+
+            budgets:
+                JSON.parse(
+                    localStorage.getItem(
+                        "spendwiseBudgets"
+                    )
+                ) || [],
+
+            goals:
+                JSON.parse(
+                    localStorage.getItem(
+                        "spendwiseGoals"
+                    )
+                ) || [],
+
+            settings:
+                settings
+
+        };
+
+
+        const blob =
+            new Blob(
+                [
+                    JSON.stringify(
+                        data,
+                        null,
+                        2
+                    )
+                ],
+                {
+                    type: "application/json"
+                }
+            );
+
+
+        const url =
+            URL.createObjectURL(blob);
+
+
+        const link =
+            document.createElement("a");
+
+
+        link.href = url;
+
+        link.download =
+            "spendwise-data.json";
+
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link);
+
+
+        URL.revokeObjectURL(url);
+
+
+        showToast(
+            "Your SpendWise data was exported."
+        );
+
+    }
+
+
+    /* =========================
+       CLEAR SETTINGS
+    ========================= */
+
+    function clearTemporaryData() {
+
+        localStorage.removeItem(
+            SETTINGS_KEY
+        );
+
+
+        settings = {
+            ...defaultSettings
+        };
+
+
+        applySettingsToUI();
+
+
+        showToast(
+            "Settings restored to defaults."
+        );
+
+    }
+
+
+    function applySettingsToUI() {
+
+        currencySelect.value =
+            settings.currency;
+
+
+        defaultPage.value =
+            settings.defaultPage;
+
+
+        updateThemeButtons();
+
+
+        document.getElementById(
+            "compactToggle"
+        ).checked =
+            settings.compact;
+
+
+        document.getElementById(
+            "confirmDeleteToggle"
+        ).checked =
+            settings.confirmDelete;
+
+
+        document.getElementById(
+            "notificationsToggle"
+        ).checked =
+            settings.notifications;
+
+
+        document.getElementById(
+            "budgetAlertsToggle"
+        ).checked =
+            settings.budgetAlerts;
+
+
+        document.getElementById(
+            "goalAlertsToggle"
+        ).checked =
+            settings.goalAlerts;
+
+
+        document.getElementById(
+            "tipsToggle"
+        ).checked =
+            settings.tips;
+
+
+        document.getElementById(
+            "insightsToggle"
+        ).checked =
+            settings.insights;
+
+
+        document.getElementById(
+            "balanceVisibilityToggle"
+        ).checked =
+            settings.balanceVisibility;
+
+
+        document.getElementById(
+            "receiptToggle"
+        ).checked =
+            settings.receiptStorage;
+
+
+        document.getElementById(
+            "twoFactorToggle"
+        ).checked =
+            settings.twoFactor;
+
+
+        saveSettings();
+
+    }
+
+
+    /* =========================
+       DELETE DATA
+    ========================= */
+
+    function openDeleteModal() {
+
+        document
+            .getElementById("deleteModal")
+            .classList.add("show");
+
+    }
+
+
+    function closeDeleteModal() {
+
+        document
+            .getElementById("deleteModal")
+            .classList.remove("show");
+
+    }
+
+
+    function deleteAllData() {
+
+        localStorage.removeItem(
+            "spendwiseExpenses"
+        );
+
+
+        localStorage.removeItem(
+            "spendwiseBudgets"
+        );
+
+
+        localStorage.removeItem(
+            "spendwiseGoals"
+        );
+
+
+        updateDataCounts();
+
+        closeDeleteModal();
+
+
+        showToast(
+            "All financial data has been deleted."
+        );
+
+    }
+
+
+    /* =========================
+       PROFILE
+    ========================= */
+
+    function loadProfile() {
+
+        const profile =
+            JSON.parse(
+                localStorage.getItem(
+                    "spendwiseProfile"
+                )
+            );
+
+
+        if (!profile) return;
+
+
+        const avatar =
+            profile.avatar ||
+            profile.name
+                ?.charAt(0)
+                ?.toUpperCase() ||
+            "M";
+
+
+        document.getElementById(
+            "miniAvatar"
+        ).textContent =
+            avatar;
+
+
+        document.getElementById(
+            "miniName"
+        ).textContent =
+            profile.name
+                ?.split(" ")[0] ||
+            "Mariya";
+
+    }
+
+
+    loadProfile();
+
+
+    /* =========================
+       DEMO SECURITY MESSAGE
+    ========================= */
+
+    function showDemoMessage() {
+
+        showToast(
+            "Password management will connect to the backend later."
+        );
+
+    }
+
+
+    /* =========================
+       LOGOUT
+    ========================= */
+
+    function logout() {
+
+        window.location.href =
+            "index.html";
+
+    }
+
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    function showToast(message) {
+
+        const toast =
+            document.getElementById(
+                "toast"
+            );
+
+
+        document.getElementById(
+            "toastMessage"
+        ).textContent =
+            message;
+
+
+        toast.classList.add(
+            "show"
+        );
+
+
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2800
+        );
+
+    }
+
+
+    /* =========================
+       SIDEBAR
+    ========================= */
+
+    function toggleSidebar() {
+
+        document
+            .getElementById("sidebar")
+            .classList.toggle(
+                "open"
+            );
+
+    }
+
+
+    /* =========================
+       CLOSE MODAL
+    ========================= */
+
+    document
+        .getElementById("deleteModal")
+        .addEventListener(
+            "click",
+            function(e) {
+
+                if (
+                    e.target === this
+                ) {
+
+                    closeDeleteModal();
+
+                }
+
+            }
+        );
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SpendWise | Add Expense</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #07111f;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* =========================
+           BACKGROUND GLOW
+        ========================== */
+
+        body::before {
+            content: "";
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: rgba(81, 230, 173, 0.07);
+            filter: blur(120px);
+            border-radius: 50%;
+            top: -180px;
+            left: -150px;
+            z-index: -1;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: rgba(117, 105, 255, 0.08);
+            filter: blur(120px);
+            border-radius: 50%;
+            right: -180px;
+            bottom: -200px;
+            z-index: -1;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================== */
+
+        .navbar {
+            height: 76px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            background: rgba(7,17,31,0.75);
+            backdrop-filter: blur(15px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #51e6ad, #36c995);
+            color: #06131e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        .logo-name {
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: -0.6px;
+        }
+
+        .logo-name span {
+            color: #51e6ad;
+        }
+
+        .back-btn {
+            color: #8997a9;
+            text-decoration: none;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            color: #51e6ad;
+        }
+
+        /* =========================
+           MAIN
+        ========================== */
+
+        .page {
+            width: min(1050px, 92%);
+            margin: 45px auto 70px;
+        }
+
+        .page-heading {
+            margin-bottom: 30px;
+        }
+
+        .page-heading h1 {
+            font-size: 29px;
+            letter-spacing: -0.8px;
+            margin-bottom: 8px;
+        }
+
+        .page-heading p {
+            color: #77869a;
+            font-size: 13px;
+        }
+
+        /* =========================
+           LAYOUT
+        ========================== */
+
+        .expense-layout {
+            display: grid;
+            grid-template-columns: 1.6fr 0.8fr;
+            gap: 22px;
+            align-items: start;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.035);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 20px;
+            padding: 28px;
+            backdrop-filter: blur(18px);
+        }
+
+        /* =========================
+           AMOUNT
+        ========================== */
+
+        .amount-section {
+            text-align: center;
+            padding: 10px 0 30px;
+        }
+
+        .amount-label {
+            color: #7c8b9e;
+            font-size: 12px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .amount-input-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .currency {
+            color: #51e6ad;
+            font-size: 31px;
+            font-weight: 600;
+        }
+
+        .amount-input {
+            width: 260px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-size: 43px;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: -1px;
+        }
+
+        .amount-input::placeholder {
+            color: #39495c;
+        }
+
+        /* Remove arrows */
+        .amount-input::-webkit-outer-spin-button,
+        .amount-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .amount-input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* =========================
+           FORM
+        ========================== */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            color: #8997a9;
+            margin-bottom: 9px;
+            font-weight: 500;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #617187;
+            font-size: 13px;
+            pointer-events: none;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.035);
+            color: #ffffff;
+            border-radius: 12px;
+            outline: none;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+
+        input,
+        select {
+            height: 47px;
+            padding: 0 15px 0 43px;
+            font-size: 12px;
+        }
+
+        textarea {
+            height: 100px;
+            padding: 14px 15px;
+            resize: vertical;
+            font-size: 12px;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: rgba(81,230,173,0.5);
+            background: rgba(81,230,173,0.035);
+            box-shadow: 0 0 0 3px rgba(81,230,173,0.05);
+        }
+
+        select {
+            appearance: none;
+            cursor: pointer;
+        }
+
+        select option {
+            background: #0d1b2d;
+            color: white;
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #617187;
+            pointer-events: none;
+            font-size: 10px;
+        }
+
+        /* =========================
+           CATEGORY
+        ========================== */
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 9px;
+        }
+
+        .category-option {
+            height: 70px;
+            border: 1px solid rgba(255,255,255,0.07);
+            background: rgba(255,255,255,0.025);
+            border-radius: 12px;
+            color: #7e8da0;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            transition: 0.25s;
+        }
+
+        .category-option i {
+            font-size: 15px;
+        }
+
+        .category-option span {
+            font-size: 9px;
+        }
+
+        .category-option:hover {
+            border-color: rgba(81,230,173,0.3);
+            color: #51e6ad;
+        }
+
+        .category-option.selected {
+            background: rgba(81,230,173,0.09);
+            border-color: #51e6ad;
+            color: #51e6ad;
+        }
+
+        /* =========================
+           PAYMENT
+        ========================== */
+
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .payment-option {
+            position: relative;
+        }
+
+        .payment-option input {
+            display: none;
+        }
+
+        .payment-label {
+            height: 62px;
+            border: 1px solid rgba(255,255,255,0.07);
+            background: rgba(255,255,255,0.025);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            color: #77869a;
+            cursor: pointer;
+            font-size: 10px;
+            transition: 0.25s;
+        }
+
+        .payment-label i {
+            font-size: 14px;
+        }
+
+        .payment-option input:checked + .payment-label {
+            color: #51e6ad;
+            border-color: #51e6ad;
+            background: rgba(81,230,173,0.08);
+        }
+
+        /* =========================
+           RECEIPT
+        ========================== */
+
+        .receipt-upload {
+            border: 1px dashed rgba(255,255,255,0.12);
+            border-radius: 13px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .receipt-upload:hover {
+            border-color: rgba(81,230,173,0.4);
+            background: rgba(81,230,173,0.03);
+        }
+
+        .receipt-upload i {
+            color: #51e6ad;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .receipt-upload p {
+            color: #8795a7;
+            font-size: 10px;
+        }
+
+        .receipt-upload span {
+            display: block;
+            color: #556478;
+            font-size: 9px;
+            margin-top: 5px;
+        }
+
+        #receipt {
+            display: none;
+        }
+
+        /* =========================
+           RECURRING
+        ========================== */
+
+        .recurring-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            margin-top: 5px;
+        }
+
+        .recurring-text strong {
+            display: block;
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+
+        .recurring-text span {
+            color: #68778a;
+            font-size: 9px;
+        }
+
+        .switch {
+            position: relative;
+            width: 42px;
+            height: 23px;
+        }
+
+        .switch input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            inset: 0;
+            border-radius: 30px;
+            background: #1c2b3d;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .slider::before {
+            content: "";
+            position: absolute;
+            width: 17px;
+            height: 17px;
+            left: 3px;
+            top: 3px;
+            border-radius: 50%;
+            background: #78889a;
+            transition: 0.3s;
+        }
+
+        .switch input:checked + .slider {
+            background: rgba(81,230,173,0.25);
+        }
+
+        .switch input:checked + .slider::before {
+            transform: translateX(19px);
+            background: #51e6ad;
+        }
+
+        /* =========================
+           BUTTONS
+        ========================== */
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            height: 48px;
+            border-radius: 12px;
+            padding: 0 25px;
+            border: none;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-cancel {
+            background: rgba(255,255,255,0.045);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #8997a9;
+            flex: 1;
+        }
+
+        .btn-cancel:hover {
+            color: white;
+            background: rgba(255,255,255,0.07);
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #51e6ad, #36c995);
+            color: #06131e;
+            flex: 2;
+            box-shadow: 0 10px 25px rgba(81,230,173,0.12);
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(81,230,173,0.2);
+        }
+
+        /* =========================
+           SUMMARY CARD
+        ========================== */
+
+        .summary-card {
+            position: sticky;
+            top: 25px;
+        }
+
+        .summary-title {
+            font-size: 15px;
+            margin-bottom: 22px;
+        }
+
+        .preview {
+            border-radius: 17px;
+            background: linear-gradient(
+                145deg,
+                rgba(81,230,173,0.1),
+                rgba(117,105,255,0.1)
+            );
+            border: 1px solid rgba(255,255,255,0.07);
+            padding: 22px;
+            text-align: center;
+        }
+
+        .preview-icon {
+            width: 58px;
+            height: 58px;
+            border-radius: 17px;
+            margin: 0 auto 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(81,230,173,0.12);
+            color: #51e6ad;
+            font-size: 21px;
+        }
+
+        .preview-category {
+            color: #77869a;
+            font-size: 10px;
+            margin-bottom: 7px;
+        }
+
+        .preview-amount {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .preview-name {
+            color: #a0adbd;
+            font-size: 11px;
+        }
+
+        .summary-line {
+            height: 1px;
+            background: rgba(255,255,255,0.07);
+            margin: 24px 0;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .summary-row span {
+            color: #6f7e91;
+            font-size: 10px;
+        }
+
+        .summary-row strong {
+            font-size: 10px;
+        }
+
+        .tip {
+            margin-top: 25px;
+            padding: 14px;
+            border-radius: 12px;
+            background: rgba(117,105,255,0.07);
+            border: 1px solid rgba(117,105,255,0.1);
+        }
+
+        .tip-title {
+            color: #9a92ff;
+            font-size: 10px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .tip p {
+            color: #77869a;
+            font-size: 9px;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           SUCCESS MESSAGE
+        ========================== */
+
+        .success-message {
+            display: none;
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            padding: 14px 18px;
+            background: #102c25;
+            border: 1px solid rgba(81,230,173,0.3);
+            color: #51e6ad;
+            border-radius: 12px;
+            font-size: 11px;
+            z-index: 1000;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 850px) {
+
+            .expense-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-card {
+                position: static;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 0 4%;
+            }
+
+            .page {
+                width: 94%;
+                margin-top: 30px;
+            }
+
+            .page-heading h1 {
+                font-size: 24px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .payment-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .amount-input {
+                font-size: 35px;
+                width: 210px;
+            }
+
+            .currency {
+                font-size: 27px;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .back-btn span {
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- =========================
+     NAVBAR
+========================== -->
+
+<nav class="navbar">
+
+    <a href="dashboard.html" style="text-decoration:none;color:white;">
+
+        <div class="logo">
+
+            <div class="logo-icon">₹</div>
+
+            <div class="logo-name">
+                Spend<span>Wise</span>
+            </div>
+
+        </div>
+
+    </a>
+
+    <a href="dashboard.html" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Back to Dashboard</span>
+    </a>
+
+</nav>
+
+
+<!-- =========================
+     MAIN PAGE
+========================== -->
+
+<main class="page">
+
+    <div class="page-heading">
+
+        <h1>Add an Expense</h1>
+
+        <p>
+            Record your spending and keep your finances organized.
+        </p>
+
+    </div>
+
+
+    <div class="expense-layout">
+
+
+        <!-- =========================
+             FORM
+        ========================== -->
+
+        <div class="card">
+
+            <form id="expenseForm">
+
+
+                <!-- AMOUNT -->
+
+                <div class="amount-section">
+
+                    <span class="amount-label">
+                        How much did you spend?
+                    </span>
+
+                    <div class="amount-input-wrapper">
+
+                        <span class="currency">₹</span>
+
+                        <input
+                            type="number"
+                            id="amount"
+                            class="amount-input"
+                            placeholder="0.00"
+                            min="1"
+                            step="0.01"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- TITLE + DATE -->
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="expenseName">
+                            EXPENSE NAME
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-pen input-icon"></i>
+
+                            <input
+                                type="text"
+                                id="expenseName"
+                                placeholder="e.g. Lunch"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="expenseDate">
+                            DATE
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-regular fa-calendar input-icon"></i>
+
+                            <input
+                                type="date"
+                                id="expenseDate"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CATEGORY -->
+
+                    <div class="form-group full">
+
+                        <label>
+                            CATEGORY
+                        </label>
+
+                        <div class="category-grid">
+
+                            <button type="button"
+                                    class="category-option selected"
+                                    data-category="Food & Dining"
+                                    data-icon="fa-utensils">
+
+                                <i class="fa-solid fa-utensils"></i>
+                                <span>Food</span>
+
+                            </button>
+
+
+                            <button type="button"
+                                    class="category-option"
+                                    data-category="Shopping"
+                                    data-icon="fa-bag-shopping">
+
+                                <i class="fa-solid fa-bag-shopping"></i>
+                                <span>Shopping</span>
+
+                            </button>
+
+
+                            <button type="button"
+                                    class="category-option"
+                                    data-category="Transport"
+                                    data-icon="fa-car">
+
+                                <i class="fa-solid fa-car"></i>
+                                <span>Transport</span>
+
+                            </button>
+
+
+                            <button type="button"
+                                    class="category-option"
+                                    data-category="Entertainment"
+                                    data-icon="fa-film">
+
+                                <i class="fa-solid fa-film"></i>
+                                <span>Fun</span>
+
+                            </button>
+
+
+                            <button type="button"
+                                    class="category-option"
+                                    data-category="Bills & Utilities"
+                                    data-icon="fa-bolt">
+
+                                <i class="fa-solid fa-bolt"></i>
+                                <span>Bills</span>
+
+                            </button>
+
+
+                            <button type="button"
+                                    class="category-option"
+                                    data-category="Health"
+                                    data-icon="fa-heart-pulse">
+
+                                <i class="fa-solid fa-heart-pulse"></i>
+                                <span>Health</span>
+
+                            </button>
+
+
+                            <button type="button"
+                                    class="category-option"
+                                    data-category="Education"
+                                    data-icon="fa-graduation-cap">
+
+                                <i class="fa-solid fa-graduation-cap"></i>
+                                <span>Education</span>
+
+                            </button>
+
+
+                            <button type="button"
+                                    class="category-option"
+                                    data-category="Travel"
+                                    data-icon="fa-plane">
+
+                                <i class="fa-solid fa-plane"></i>
+                                <span>Travel</span>
+
+                            </button>
+
+
+                            <button type="button"
+                                    class="category-option"
+                                    data-category="Groceries"
+                                    data-icon="fa-basket-shopping">
+
+                                <i class="fa-solid fa-basket-shopping"></i>
+                                <span>Groceries</span>
+
+                            </button>
+
+
+                            <button type="button"
+                                    class="category-option"
+                                    data-category="Other"
+                                    data-icon="fa-ellipsis">
+
+                                <i class="fa-solid fa-ellipsis"></i>
+                                <span>Other</span>
+
+                            </button>
+
+                        </div>
+
+                        <input
+                            type="hidden"
+                            id="category"
+                            value="Food & Dining"
+                        >
+
+                    </div>
+
+
+                    <!-- PAYMENT METHOD -->
+
+                    <div class="form-group full">
+
+                        <label>
+                            PAYMENT METHOD
+                        </label>
+
+                        <div class="payment-grid">
+
+                            <div class="payment-option">
+
+                                <input
+                                    type="radio"
+                                    name="payment"
+                                    id="upi"
+                                    value="UPI"
+                                    checked
+                                >
+
+                                <label
+                                    for="upi"
+                                    class="payment-label">
+
+                                    <i class="fa-solid fa-mobile-screen-button"></i>
+
+                                    UPI
+
+                                </label>
+
+                            </div>
+
+
+                            <div class="payment-option">
+
+                                <input
+                                    type="radio"
+                                    name="payment"
+                                    id="card"
+                                    value="Card"
+                                >
+
+                                <label
+                                    for="card"
+                                    class="payment-label">
+
+                                    <i class="fa-regular fa-credit-card"></i>
+
+                                    Card
+
+                                </label>
+
+                            </div>
+
+
+                            <div class="payment-option">
+
+                                <input
+                                    type="radio"
+                                    name="payment"
+                                    id="cash"
+                                    value="Cash"
+                                >
+
+                                <label
+                                    for="cash"
+                                    class="payment-label">
+
+                                    <i class="fa-solid fa-money-bill-wave"></i>
+
+                                    Cash
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- NOTES -->
+
+                    <div class="form-group full">
+
+                        <label for="notes">
+                            NOTES
+                        </label>
+
+                        <textarea
+                            id="notes"
+                            placeholder="Add a note about this expense..."></textarea>
+
+                    </div>
+
+
+                    <!-- RECEIPT -->
+
+                    <div class="form-group full">
+
+                        <label>
+                            RECEIPT
+                        </label>
+
+                        <label for="receipt" class="receipt-upload">
+
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                            <p>
+                                Click to upload receipt
+                            </p>
+
+                            <span>
+                                PNG, JPG or PDF · Optional
+                            </span>
+
+                        </label>
+
+                        <input
+                            type="file"
+                            id="receipt"
+                            accept=".png,.jpg,.jpeg,.pdf"
+                        >
+
+                    </div>
+
+
+                    <!-- RECURRING -->
+
+                    <div class="form-group full">
+
+                        <div class="recurring-row">
+
+                            <div class="recurring-text">
+
+                                <strong>
+                                    Make this a recurring expense
+                                </strong>
+
+                                <span>
+                                    Automatically record this expense regularly
+                                </span>
+
+                            </div>
+
+                            <label class="switch">
+
+                                <input
+                                    type="checkbox"
+                                    id="recurring"
+                                >
+
+                                <span class="slider"></span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="form-actions">
+
+                    <button
+                        type="button"
+                        class="btn btn-cancel"
+                        onclick="goBack()">
+
+                        Cancel
+
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-save">
+
+                        <i class="fa-solid fa-check"></i>
+                        &nbsp; Save Expense
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- =========================
+             PREVIEW
+        ========================== -->
+
+        <aside class="card summary-card">
+
+            <h3 class="summary-title">
+                Expense Preview
+            </h3>
+
+
+            <div class="preview">
+
+                <div class="preview-icon" id="previewIcon">
+
+                    <i class="fa-solid fa-utensils"></i>
+
+                </div>
+
+                <div
+                    class="preview-category"
+                    id="previewCategory">
+
+                    Food & Dining
+
+                </div>
+
+                <div
+                    class="preview-amount"
+                    id="previewAmount">
+
+                    ₹0.00
+
+                </div>
+
+                <div
+                    class="preview-name"
+                    id="previewName">
+
+                    Expense name
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-line"></div>
+
+
+            <div class="summary-row">
+
+                <span>Date</span>
+
+                <strong id="previewDate">
+                    Today
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>Payment</span>
+
+                <strong id="previewPayment">
+                    UPI
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>Recurring</span>
+
+                <strong id="previewRecurring">
+                    No
+                </strong>
+
+            </div>
+
+
+            <div class="tip">
+
+                <div class="tip-title">
+
+                    <i class="fa-solid fa-lightbulb"></i>
+                    Smart Tip
+
+                </div>
+
+                <p>
+                    Tracking small expenses regularly helps
+                    you understand where your money goes.
+                </p>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</main>
+
+
+<!-- SUCCESS MESSAGE -->
+
+<div class="success-message" id="successMessage">
+
+    <i class="fa-solid fa-circle-check"></i>
+    Expense saved successfully!
+
+</div>
+
+
+<script>
+
+    /* =========================
+       SET TODAY'S DATE
+    ========================== */
+
+    const dateInput =
+        document.getElementById("expenseDate");
+
+    const today =
+        new Date().toISOString().split("T")[0];
+
+    dateInput.value = today;
+
+
+    /* =========================
+       AMOUNT PREVIEW
+    ========================== */
+
+    const amountInput =
+        document.getElementById("amount");
+
+    const previewAmount =
+        document.getElementById("previewAmount");
+
+    amountInput.addEventListener("input", function () {
+
+        const amount =
+            parseFloat(this.value) || 0;
+
+        previewAmount.textContent =
+            "₹" + amount.toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+    });
+
+
+    /* =========================
+       NAME PREVIEW
+    ========================== */
+
+    const nameInput =
+        document.getElementById("expenseName");
+
+    const previewName =
+        document.getElementById("previewName");
+
+    nameInput.addEventListener("input", function () {
+
+        previewName.textContent =
+            this.value.trim() || "Expense name";
+
+    });
+
+
+    /* =========================
+       CATEGORY
+    ========================== */
+
+    const categoryButtons =
+        document.querySelectorAll(".category-option");
+
+    const categoryInput =
+        document.getElementById("category");
+
+    const previewCategory =
+        document.getElementById("previewCategory");
+
+    const previewIcon =
+        document.getElementById("previewIcon");
+
+    categoryButtons.forEach(button => {
+
+        button.addEventListener("click", function () {
+
+            categoryButtons.forEach(btn => {
+                btn.classList.remove("selected");
+            });
+
+            this.classList.add("selected");
+
+            const category =
+                this.dataset.category;
+
+            const icon =
+                this.dataset.icon;
+
+            categoryInput.value = category;
+
+            previewCategory.textContent =
+                category;
+
+            previewIcon.innerHTML =
+                `<i class="fa-solid ${icon}"></i>`;
+
+        });
+
+    });
+
+
+    /* =========================
+       PAYMENT PREVIEW
+    ========================== */
+
+    const paymentInputs =
+        document.querySelectorAll(
+            'input[name="payment"]'
+        );
+
+    const previewPayment =
+        document.getElementById("previewPayment");
+
+    paymentInputs.forEach(input => {
+
+        input.addEventListener("change", function () {
+
+            previewPayment.textContent =
+                this.value;
+
+        });
+
+    });
+
+
+    /* =========================
+       DATE PREVIEW
+    ========================== */
+
+    const previewDate =
+        document.getElementById("previewDate");
+
+    dateInput.addEventListener("change", function () {
+
+        const selectedDate =
+            new Date(this.value);
+
+        previewDate.textContent =
+            selectedDate.toLocaleDateString(
+                "en-IN",
+                {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric"
+                }
+            );
+
+    });
+
+
+    /* =========================
+       RECURRING PREVIEW
+    ========================== */
+
+    const recurring =
+        document.getElementById("recurring");
+
+    const previewRecurring =
+        document.getElementById("previewRecurring");
+
+    recurring.addEventListener("change", function () {
+
+        previewRecurring.textContent =
+            this.checked ? "Yes" : "No";
+
+    });
+
+
+    /* =========================
+       RECEIPT FILE
+    ========================== */
+
+    const receipt =
+        document.getElementById("receipt");
+
+    receipt.addEventListener("change", function () {
+
+        if (this.files.length > 0) {
+
+            const uploadText =
+                this.parentElement;
+
+            uploadText.querySelector("p")
+                .textContent =
+                this.files[0].name;
+
+        }
+
+    });
+
+
+    /* =========================
+       CANCEL
+    ========================== */
+
+    function goBack() {
+
+        window.location.href =
+            "dashboard.html";
+
+    }
+
+
+    /* =========================
+       SAVE EXPENSE
+    ========================== */
+
+    document
+        .getElementById("expenseForm")
+        .addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            const amount =
+                parseFloat(
+                    document.getElementById("amount").value
+                );
+
+            const name =
+                document
+                .getElementById("expenseName")
+                .value
+                .trim();
+
+            if (!amount || amount <= 0) {
+
+                alert("Please enter a valid amount.");
+
+                return;
+
+            }
+
+            if (!name) {
+
+                alert("Please enter an expense name.");
+
+                return;
+
+            }
+
+
+            /*
+             * DEMO STORAGE
+             *
+             * This stores the expense in the browser.
+             * Later this can be replaced with your backend/database.
+             */
+
+            const expense = {
+
+                id: Date.now(),
+
+                amount: amount,
+
+                name: name,
+
+                category:
+                    categoryInput.value,
+
+                date:
+                    dateInput.value,
+
+                payment:
+                    document.querySelector(
+                        'input[name="payment"]:checked'
+                    ).value,
+
+                notes:
+                    document.getElementById("notes").value,
+
+                recurring:
+                    recurring.checked
+
+            };
+
+
+            let expenses =
+                JSON.parse(
+                    localStorage.getItem("spendwiseExpenses")
+                ) || [];
+
+
+            expenses.push(expense);
+
+
+            localStorage.setItem(
+                "spendwiseExpenses",
+                JSON.stringify(expenses)
+            );
+
+
+            /* Success message */
+
+            const success =
+                document.getElementById("successMessage");
+
+            success.style.display = "block";
+
+
+            setTimeout(() => {
+
+                window.location.href =
+                    "dashboard.html";
+
+            }, 1000);
+
+        });
+
+</script>
+
+
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+    // Your Supabase project details
+    const SUPABASE_URL = "https://akhljuwtyjvjjeqzilsd.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_U1zquu84TVrvlN5EoGIuJA_ujEDTtWG";
+
+    // Initialize client
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Handle expense submission
+    document.getElementById("expenseForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const category = document.getElementById("category").value;
+      const amount = parseFloat(document.getElementById("amount").value);
+
+      // Get logged-in user
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+      if (userError || !userData.user) {
+        alert("You must be logged in to add expenses.");
+        return;
+      }
+
+      // Insert expense into Supabase
+      const { data, error } = await supabase
+        .from("expenses")
+        .insert([{ user_id: userData.user.id, category, amount, date: new Date() }]);
+
+      if (error) {
+        alert("Error adding expense: " + error.message);
+      } else {
+        alert("Expense added successfully!");
+        // Optional: redirect to dashboard
+        window.location.href = "dashboard.html";
+      }
+    });
+  </script>
+  
+</body>
+</html>
